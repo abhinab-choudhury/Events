@@ -36,7 +36,6 @@ import {
 import { ChartConfig, ChartContainer } from "@/components/ui/chart"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
-import { Separator } from "@/components/ui/separator"
 import { cn } from "@/lib/utils"
 const chartData = [
   { browser: "safari", visitors: 1260, fill: "var(--color-safari)" },
