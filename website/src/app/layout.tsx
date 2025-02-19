@@ -1,6 +1,5 @@
 import type { Metadata } from 'next';
 import { ThemeProvider } from '@/components/theme-provider';
-import { HydrationOverlay } from '@builder.io/react-hydration-overlay';
 import { Geist, Geist_Mono } from 'next/font/google';
 import './globals.css';
 import { ThemeModeToggle } from '@/components/ThemeBtn';
@@ -30,21 +29,19 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        <HydrationOverlay>
-          <ThemeProvider
-            attribute="class"
-            defaultTheme="system"
-            enableSystem
-            disableTransitionOnChange
-          >
-            {/* Theme toggle positioned at top-right */}
-            <div className="absolute right-4 top-4 z-50">
-              <ThemeModeToggle />
-            </div>
+        <ThemeProvider
+          attribute="class"
+          defaultTheme="system"
+          enableSystem
+          disableTransitionOnChange
+        >
+          {/* Theme toggle positioned at top-right */}
+          <div className="absolute right-4 top-4 z-50">
+            <ThemeModeToggle />
+          </div>
 
-            {children}
-          </ThemeProvider>
-        </HydrationOverlay>
+          {children}
+        </ThemeProvider>
       </body>
     </html>
   );
