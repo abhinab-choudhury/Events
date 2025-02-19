@@ -5,8 +5,6 @@ import {
   GalleryVerticalEnd,
   MessageSquareText,
   Shield,
-  Sparkles,
-  Users2,
   Zap,
 } from 'lucide-react';
 
@@ -90,16 +88,16 @@ const Feature = ({
   return (
     <div
       className={cn(
-        'group/feature relative flex flex-col py-10 dark:border-neutral-800 lg:border-r',
+        'group/feature relative flex flex-col py-10 dark:hover:bg-black hover:bg-indigo-100 lg:border-r',
         (index === 0 || index === 3) && 'dark:border-neutral-800 lg:border-l',
         index < 3 && 'dark:border-neutral-800 lg:border-b'
       )}
     >
       {index < 3 && (
-        <div className="pointer-events-none absolute inset-0 h-full w-full bg-gradient-to-t from-neutral-100 to-transparent opacity-0 transition duration-200 group-hover/feature:opacity-100 dark:from-neutral-800" />
+        <div className="pointer-events-none absolute inset-0 h-full w-full bg-gradient-to-t from-white to-transparent opacity-0 transition duration-200 group-hover/feature:opacity-100 dark:from-indigo-800 dark:to-black" />
       )}
       {index >= 3 && (
-        <div className="pointer-events-none absolute inset-0 h-full w-full bg-gradient-to-b from-neutral-100 to-transparent opacity-0 transition duration-200 group-hover/feature:opacity-100 dark:from-neutral-800" />
+        <div className="pointer-events-none absolute inset-0 h-full w-full bg-gradient-to-b from-white to-transparent opacity-0 transition duration-200 group-hover/feature:opacity-100 dark:from-indigo-800 dark:to-black" />
       )}
       <div className="relative z-10 mb-4 px-10 text-indigo-600 dark:text-indigo-400">
         {icon}
