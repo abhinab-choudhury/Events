@@ -35,11 +35,6 @@ export default function RootLayout({
           enableSystem
           disableTransitionOnChange
         >
-          {/* Theme toggle positioned at top-right */}
-          <div className="absolute right-4 top-4 z-50">
-            <ThemeModeToggle />
-          </div>
-
           {children}
         </ThemeProvider>
       </body>

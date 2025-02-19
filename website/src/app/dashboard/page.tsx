@@ -1,18 +1,14 @@
-"use client"
+'use client';
 
-import { TrendingUp } from "lucide-react"
+import { TrendingUp } from 'lucide-react';
 import {
-  Label as RechartsLabel,
+  Label,
   PolarGrid,
   PolarRadiusAxis,
   RadialBar,
   RadialBarChart,
-} from "recharts"
-import { 
-  Avatar, 
-  AvatarFallback, 
-  AvatarImage 
-} from "@/components/ui/avatar"
+} from 'recharts';
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import {
   Card,
   CardContent,
@@ -20,61 +16,64 @@ import {
   CardFooter,
   CardHeader,
   CardTitle,
-} from "@/components/ui/card"
+} from '@/components/ui/card';
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "@/components/ui/select"
+} from '@/components/ui/select';
 import {
   ResizableHandle,
   ResizablePanel,
   ResizablePanelGroup,
-} from "@/components/ui/resizable"
-import { ChartConfig, ChartContainer } from "@/components/ui/chart"
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import { cn } from "@/lib/utils"
+} from '@/components/ui/resizable';
+import { ChartConfig, ChartContainer } from '@/components/ui/chart';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { cn } from '@/lib/utils';
 const chartData = [
-  { browser: "safari", visitors: 1260, fill: "var(--color-safari)" },
-]
+  { browser: 'safari', visitors: 1260, fill: 'var(--color-safari)' },
+];
 
 const chartConfig = {
   visitors: {
-    label: "Visitors",
+    label: 'Visitors',
   },
   safari: {
-    label: "Safari",
-    color: "hsl(var(--chart-2))",
+    label: 'Safari',
+    color: 'hsl(var(--chart-2))',
   },
-} satisfies ChartConfig
+} satisfies ChartConfig;
 
 export default function Dashboard() {
   return (
-    <ResizablePanelGroup direction="horizontal" className="w-full min-h-screen p-10">
-      <ResizablePanel defaultSize={15} className="max-w-[15%] min-w-[10%]">
+    <ResizablePanelGroup
+      direction="horizontal"
+      className="min-h-screen w-full p-10"
+    >
+      <ResizablePanel defaultSize={15} className="min-w-[10%] max-w-[15%]">
         <div className="flex h-full items-center justify-center p-6">
           <span className="font-semibold">Sidebar</span>
         </div>
       </ResizablePanel>
       <ResizableHandle withHandle />
-      <ResizablePanel defaultSize={75} className="overflow-y-scroll min-h-fit">
-        <div className="flex flex-col md:flex-row gap-4 justify-center m-4">
+      <ResizablePanel defaultSize={75} className="min-h-fit overflow-y-scroll">
+        <div className="m-4 flex flex-col justify-center gap-4 md:flex-row">
           <DemoShareDocument className="md:w-[60%]" />
           <RadialChart className="md:w-[40%]" />
         </div>
       </ResizablePanel>
     </ResizablePanelGroup>
-  )
+  );
 }
 
-function RadialChart(props:{
-  className?: string
+function RadialChart(props: {
+  className: string
 }) {
-  return(
-    <Card className={cn("flex flex-col", props.className)}>
+  return (
+    <Card className={cn("flex flex-col",props.className)}>
       <CardHeader className="items-center pb-0">
         <CardTitle>Radial Chart - Shape</CardTitle>
         <CardDescription>January - June 2024</CardDescription>
@@ -99,24 +98,33 @@ function RadialChart(props:{
             />
             <RadialBar dataKey="visitors" background />
             <PolarRadiusAxis tick={false} tickLine={false} axisLine={false}>
-              <RechartsLabel
+              <Label
                 content={({ viewBox }) => {
-                  if (!viewBox) return null;
-                  return (
-                    <text
-                      x={viewBox.cx}
-                      y={viewBox.cy}
-                      textAnchor="middle"
-                      dominantBaseline="middle"
-                    >
-                      <tspan x={viewBox.cx} y={viewBox.cy} className="fill-foreground text-4xl font-bold">
-                        {chartData[0].visitors.toLocaleString()}
-                      </tspan>
-                      <tspan x={viewBox.cx} y={viewBox.cy + 24} className="fill-muted-foreground">
-                        Visitors
-                      </tspan>
-                    </text>
-                  );
+                  if (viewBox && 'cx' in viewBox && 'cy' in viewBox) {
+                    return (
+                      <text
+                        x={viewBox.cx}
+                        y={viewBox.cy}
+                        textAnchor="middle"
+                        dominantBaseline="middle"
+                      >
+                        <tspan
+                          x={viewBox.cx}
+                          y={viewBox.cy}
+                          className="fill-foreground text-4xl font-bold"
+                        >
+                          {chartData[0].visitors.toLocaleString()}
+                        </tspan>
+                        <tspan
+                          x={viewBox.cx}
+                          y={(viewBox.cy || 0) + 24}
+                          className="fill-muted-foreground"
+                        >
+                          Visitors
+                        </tspan>
+                      </text>
+                    );
+                  }
                 }}
               />
             </PolarRadiusAxis>
@@ -132,23 +140,20 @@ function RadialChart(props:{
         </div>
       </CardFooter>
     </Card>
-  )
-} 
+  );
+}
 
-function DemoShareDocument(props:{
-  className?: string
-}) {
-
+function DemoShareDocument(props: { className?: string }) {
   const users = [
-    { id: 1, name: "Alice Johnson", email: "alice@example.com" },
-    { id: 2, name: "Bob Smith", email: "bob@example.com" },
-    { id: 3, name: "Charlie Brown", email: "charlie@example.com" },
-    { id: 4, name: "Alice Johnson", email: "alice@example.com" },
-    { id: 5, name: "Bob Smith", email: "bob@example.com" },
-    { id: 6, name: "Charlie Brown", email: "charlie@example.com" },
-    { id: 7, name: "Alice Johnson", email: "alice@example.com" },
-    { id: 8, name: "Bob Smith", email: "bob@example.com" },
-    { id: 9, name: "Charlie Brown", email: "charlie@example.com" },
+    { id: 1, name: 'Alice Johnson', email: 'alice@example.com' },
+    { id: 2, name: 'Bob Smith', email: 'bob@example.com' },
+    { id: 3, name: 'Charlie Brown', email: 'charlie@example.com' },
+    { id: 4, name: 'Alice Johnson', email: 'alice@example.com' },
+    { id: 5, name: 'Bob Smith', email: 'bob@example.com' },
+    { id: 6, name: 'Charlie Brown', email: 'charlie@example.com' },
+    { id: 7, name: 'Alice Johnson', email: 'alice@example.com' },
+    { id: 8, name: 'Bob Smith', email: 'bob@example.com' },
+    { id: 9, name: 'Charlie Brown', email: 'charlie@example.com' },
   ];
 
   return (
@@ -159,8 +164,8 @@ function DemoShareDocument(props:{
         </h1>
         <p className="leading-7 [&:not(:first-child)]:mt-6">
           Once upon a time, in a far-off land, there was a very lazy king who
-          spent all day lounging on his throne. One day, his advisors came to him
-          with a problem: the kingdom was running out of money.
+          spent all day lounging on his throne. One day, his advisors came to
+          him with a problem: the kingdom was running out of money.
         </p>
       </div>
       <div className="space-y-4">
@@ -172,13 +177,20 @@ function DemoShareDocument(props:{
         </div>
         <div className="text-sm font-medium">People with access</div>
         <div className="grid gap-6">
-        {users.map((user, _idx) => (
-            <div key={user.id} className="flex items-center justify-between space-x-4">
+          {users.map((user, _idx) => (
+            <div
+              key={user.id}
+              className="flex items-center justify-between space-x-4"
+            >
               <div className="flex items-center space-x-4">
                 <Avatar>
                   <AvatarImage src="/avatars/03.png" />
                   <AvatarFallback>
-                    {user.name.split(" ").map((n) => n[0]).join("").toUpperCase()}
+                    {user.name
+                      .split(' ')
+                      .map((n) => n[0])
+                      .join('')
+                      .toUpperCase()}
                   </AvatarFallback>
                 </Avatar>
                 <div>
@@ -198,10 +210,9 @@ function DemoShareDocument(props:{
                 </SelectContent>
               </Select>
             </div>
-        ))}
-            
+          ))}
         </div>
       </div>
     </section>
-  )
+  );
 }
