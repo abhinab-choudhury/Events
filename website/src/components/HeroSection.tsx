@@ -10,7 +10,7 @@ import { StarsBackground } from './ui/stars-background';
 
 export function HeroSection() {
   return (
-    <section className="relative min-h-screen w-full bg-gradient-to-b from-slate-50 via-blue-50 to-indigo-50 dark:from-slate-950 dark:via-indigo-950 dark:to-blue-950">
+    <section className="relative min-h-fit w-full bg-gradient-to-b from-slate-50 via-blue-50 to-indigo-50 dark:from-slate-950 dark:via-indigo-950 dark:to-blue-950">
       {/* Fine grid pattern overlay */}
       <div className="absolute inset-0 bg-grid-slate-200/50 dark:bg-grid-slate-800/30"></div>
 
@@ -31,7 +31,7 @@ export function HeroSection() {
           <Navbar />
 
           {/* Hero section with modern split layout */}
-          <div className="mx-auto grid max-w-7xl place-content-center items-center gap-8 pb-20 pt-8 md:grid-cols-2 md:gap-12 md:pb-32 md:pt-12">
+          <div className="mx-auto grid grid-cols-1 max-w-7xl place-content-center items-center gap-8 pb-20 pt-8 md:grid-cols-2 md:gap-12 md:pb-32 md:pt-12">
             <motion.div
               initial={{ opacity: 0, x: -20 }}
               animate={{ opacity: 1, x: 0 }}
@@ -93,7 +93,7 @@ export function HeroSection() {
               className="relative mx-auto aspect-square max-w-md"
             >
               {/* Modern abstract UI mockup - Dashboard Preview */}
-              <div className="absolute left-1/2 top-1/2 size-64 min-h-fit -translate-x-1/2 -translate-y-1/2 rounded-3xl border border-slate-200 bg-white/80 p-6 shadow-xl backdrop-blur-sm dark:border-slate-700 dark:bg-slate-900/80 dark:shadow-slate-950/20">
+              <div className="md:absolute md:left-1/2 md:top-1/2 size-64 min-h-fit md:-translate-x-1/2 md:-translate-y-1/2 rounded-3xl border border-slate-200 bg-white/80 p-6 shadow-xl backdrop-blur-sm dark:border-slate-700 dark:bg-slate-900/80 dark:shadow-slate-950/20">
                 <div className="mb-4 flex items-center justify-between">
                   <div>
                     <div className="mb-1 h-3 w-32 rounded-full bg-indigo-200 dark:bg-indigo-800"></div>
