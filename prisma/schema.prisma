@@ -1,0 +1,51 @@
+generator client {
+  provider        = "prisma-client-js"
+  previewFeatures = ["driverAdapters"]
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id        String  @id @default(uuid())
+  firstName String?
+  lastName  String?
+  email     String  @unique
+  googleId  String  @unique
+  events    Event[]
+}
+
+model Event {
+  id           String        @id @default(uuid())
+  organizer    User          @relation(fields: [organizerId], references: [id])
+  organizerId  String
+  title        String
+  poster       String
+  description  String
+  isActive     Boolean
+  reviews      EventReview[]
+  chatMessages ChatMessage[]
+}
+
+model EventReview {
+  id      String  @id @default(uuid())
+  event   Event?  @relation(fields: [eventId], references: [id])
+  eventId String?
+  review  String
+}
+
+model ChatMessage {
+  id      String @id @default(uuid())
+  event   Event  @relation(fields: [eventId], references: [id])
+  eventId String
+  sender  Sender
+  message String
+}
+
+enum Sender {
+  USER
+  BOT
+  MANAGER
+}
