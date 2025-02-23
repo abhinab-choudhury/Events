@@ -1,9 +1,16 @@
 "use client";
 
-import SignInForm from '@/components/SignInForm';
-import Image from 'next/image';
+import SignInForm from "@/components/signin-form";
+import { useSession } from "next-auth/react";
+import Image from "next/image";
+import { redirect } from "next/navigation";
 
 export default function LoginPage() {
+  const session = useSession();
+  if (session.status === "authenticated") {
+    redirect("/");
+  }
+
   return (
     <div className="flex min-h-svh flex-col items-center justify-center gap-1 bg-background">
       <a

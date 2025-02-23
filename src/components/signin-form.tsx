@@ -1,17 +1,24 @@
-'use clinet';
+"use clinet";
 
-import type { NextRequest } from "next/server";
 import { signIn } from "next-auth/react";
-import { cn } from '@/lib/utils';
-import { IconBrandGithub, IconBrandGoogle } from '@tabler/icons-react';
+import { cn } from "@/lib/utils";
+import { IconBrandGithub, IconBrandGoogle } from "@tabler/icons-react";
 
-export default function SignInForm(req: NextRequest) {
+const handleSignIn = async (provider: "github" | "google") => {
+  try {
+    await signIn(provider);
+  } catch (error) {
+    console.error("Sign-in failed:", error);
+  }
+};
+
+export default function SignInForm() {
   return (
     <div className="grid place-content-center">
       <div className="my-8 w-72">
         <div className="flex flex-col space-y-4">
           <button
-            onClick={() => signIn("github")}
+            onClick={() => handleSignIn("github")}
             className="group/btn relative flex h-10 w-full items-center justify-center space-x-2 rounded-md bg-gray-50 px-4 font-medium text-black shadow-input dark:bg-zinc-900 dark:shadow-[0px_0px_1px_1px_var(--neutral-800)]"
             type="submit"
           >
@@ -22,7 +29,7 @@ export default function SignInForm(req: NextRequest) {
             <BottomGradient />
           </button>
           <button
-            onClick={() => signIn("google")}
+            onClick={() => handleSignIn("google")}
             className="group/btn relative flex h-10 w-full items-center justify-center space-x-2 rounded-md bg-gray-50 px-4 font-medium text-black shadow-input dark:bg-zinc-900 dark:shadow-[0px_0px_1px_1px_var(--neutral-800)]"
             type="submit"
           >
@@ -55,7 +62,7 @@ const LabelInputContainer = ({
   className?: string;
 }) => {
   return (
-    <div className={cn('flex w-full flex-col space-y-2', className)}>
+    <div className={cn("flex w-full flex-col space-y-2", className)}>
       {children}
     </div>
   );

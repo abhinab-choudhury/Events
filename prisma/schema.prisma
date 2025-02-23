@@ -9,17 +9,22 @@ datasource db {
 }
 
 model User {
-  id        String  @id @default(uuid())
-  firstName String?
-  lastName  String?
-  email     String  @unique
-  googleId  String  @unique
+  id        String   @id @default(cuid())
+  name      String?
+  email     String   @unique
+  googleId  String?  @unique
+  githubId  String?  @unique
+  image     String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
   events    Event[]
+
+  @@index([email])
 }
 
 model Event {
-  id           String        @id @default(uuid())
-  organizer    User          @relation(fields: [organizerId], references: [id])
+  id           String        @id @default(cuid())
+  organizer    User          @relation(fields: [organizerId], references: [id], onDelete: Cascade)
   organizerId  String
   title        String
   poster       String
@@ -30,15 +35,15 @@ model Event {
 }
 
 model EventReview {
-  id      String  @id @default(uuid())
-  event   Event?  @relation(fields: [eventId], references: [id])
+  id      String  @id @default(cuid())
+  event   Event?  @relation(fields: [eventId], references: [id], onDelete: Cascade)
   eventId String?
   review  String
 }
 
 model ChatMessage {
-  id      String @id @default(uuid())
-  event   Event  @relation(fields: [eventId], references: [id])
+  id      String @id @default(cuid())
+  event   Event  @relation(fields: [eventId], references: [id], onDelete: Cascade)
   eventId String
   sender  Sender
   message String

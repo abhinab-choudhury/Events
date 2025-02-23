@@ -1,7 +1,7 @@
 'use client';
 
 import { motion } from 'framer-motion';
-import Navbar from './Navbar';
+import Navbar from './navbar';
 import { Calendar, MessageSquareText, Sparkles } from 'lucide-react';
 import Link from 'next/link';
 import { Button } from './ui/button';
