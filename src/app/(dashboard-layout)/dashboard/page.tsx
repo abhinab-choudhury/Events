@@ -403,16 +403,16 @@ export function NewButton() {
       </DropdownMenuTrigger>
       <DropdownMenuContent>
         <DropdownMenuItem>
-          <Link href={"create/new/conference"}>Conference</Link>
+          <Link href={"new/conference"}>Conference</Link>
         </DropdownMenuItem>
         <DropdownMenuItem>
-          <Link href={"create/new/hackathon"}>Hackathon</Link>
+          <Link href={"new/hackathon"}>Hackathon</Link>
         </DropdownMenuItem>
         <DropdownMenuItem>
-          <Link href={"create/new/meetup"}>Meetup</Link>
+          <Link href={"new/meetup"}>Meetup</Link>
         </DropdownMenuItem>
         <DropdownMenuItem>
-          <Link href={"create/new/workshop"}>workshop</Link>
+          <Link href={"new/workshop"}>workshop</Link>
         </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>
