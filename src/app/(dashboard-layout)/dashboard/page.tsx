@@ -390,9 +390,7 @@ const EventsTable = ({ events }: { events: Event[] }) => (
   </div>
 );
 
-// Main Dashboard Component
-
-export function NewButton() {
+function NewButton() {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>

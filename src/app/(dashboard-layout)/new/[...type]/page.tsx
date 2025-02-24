@@ -99,7 +99,7 @@ const formSchema = z.object({
   }),
 });
 
-export function PageHeader({
+function PageHeader({
   heading,
   description,
 }: {
