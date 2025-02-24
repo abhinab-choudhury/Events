@@ -60,13 +60,13 @@ export const authOptions: NextAuthOptions = {
       user,
       account,
     }: {
-      token: JWT,
-      user: any,
-      account: Account | null,
+      token: JWT;
+      user: any;
+      account: Account | null;
     }) {
       if (account) {
         token.accessToken = account.access_token;
-        if(user) {
+        if (user) {
           token.id = user.id;
         }
       }
