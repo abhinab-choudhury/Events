@@ -3,7 +3,7 @@
 import { motion } from "framer-motion";
 import { GalleryVerticalEnd, LogOut, Settings, User } from "lucide-react";
 import { Button } from "./ui/button";
-import ThemeModeToggle from "./themebtn";
+// import ThemeModeToggle from "./themebtn";
 import Link from "next/link";
 import {
   DropdownMenu,
@@ -54,7 +54,7 @@ export default function Navbar() {
         </Link>
       </div>
       <div className="flex items-center gap-3">
-        <ThemeModeToggle />
+        {/* <ThemeModeToggle /> */}
         {status !== "authenticated" ? (
           <Link href="/account">
             <Button
@@ -86,7 +86,7 @@ const UserDropdown = ({ session }: { session: Session }) => {
             {user?.name
               ?.split(" ")
               .map((n) => n[0])
-              .join()
+              .join("")
               .toUpperCase()}
           </AvatarFallback>
         </Avatar>

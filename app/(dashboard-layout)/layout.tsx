@@ -11,8 +11,7 @@ import {
 import Link from "next/link";
 import { motion } from "framer-motion";
 import { cn } from "@/lib/utils";
-import Dashboard from "./dashboard/page";
-import ThemeModeToggle from "@/components/themebtn";
+// import ThemeModeToggle from "@/components/themebtn";
 import { GalleryVerticalEnd } from "lucide-react";
 import { signOut, useSession } from "next-auth/react";
 
@@ -89,14 +88,14 @@ export default function Layout({ children }: { children: React.ReactNode }) {
           </div>
         </SidebarBody>
       </Sidebar>
-      <div className="flex flex-1 dark:bg-gray-950 p-6">{children}</div>.
+      <div className="flex flex-1 dark:bg-gray-950 p-6">{children}</div>
     </div>
   );
 }
 export const Logo = () => {
   return (
     <Link
-      href="#"
+      href="/"
       className="font-normal flex space-x-2 gap-3 items-center text-sm text-black py-1 relative z-20"
     >
       <div className="flex items-center justify-start align-middle gap-1">
@@ -109,7 +108,7 @@ export const Logo = () => {
           Events AI
         </motion.span>
       </div>
-      <ThemeModeToggle />
+      {/* <ThemeModeToggle /> */}
     </Link>
   );
 };

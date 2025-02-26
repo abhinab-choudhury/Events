@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
-import { ThemeProvider } from "../providers/theme-provider";
 import { Geist, Geist_Mono } from "next/font/google";
-import Provider from "@/components/client-provider";
+import Provider from "@/providers/client-provider";
+import { ThemeProvider } from "@/providers/theme-provider";
 import "./globals.css";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
@@ -36,24 +36,13 @@ export default async function RootLayout({
         <Provider session={session}>
           <ThemeProvider
             attribute="class"
-            defaultTheme="system"
+            defaultTheme="light"
             enableSystem
             disableTransitionOnChange
           >
             {children}
           </ThemeProvider>
         </Provider>
-        <footer className="dark:bg-[#0f172a]  py-4 bg-opacity-10">
-          <a
-            href="https://github.com/abhinab-choudhury"
-            className="hover:opacity-45 hover:underline"
-          >
-            <div className="flex gap-1 items-center mx-auto px-2 text-center bg-transparent text-gray-900 dark:text-white font-light text-sm">
-              Made by Abhinab Choudhury{" "}
-              <ExternalLink className="w-3 h-3 opacity-60" />
-            </div>
-          </a>
-        </footer>
       </body>
     </html>
   );

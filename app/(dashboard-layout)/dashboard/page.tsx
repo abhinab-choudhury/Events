@@ -38,6 +38,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import Link from "next/link";
 import { ChartConfig, ChartContainer } from "@/components/ui/chart";
+import { ALLOWED_TYPES } from "@/lib/utils";
 
 export type Event = {
   name: string;
@@ -400,18 +401,13 @@ function NewButton() {
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent>
-        <DropdownMenuItem>
-          <Link href={"new/conference"}>Conference</Link>
-        </DropdownMenuItem>
-        <DropdownMenuItem>
-          <Link href={"new/hackathon"}>Hackathon</Link>
-        </DropdownMenuItem>
-        <DropdownMenuItem>
-          <Link href={"new/meetup"}>Meetup</Link>
-        </DropdownMenuItem>
-        <DropdownMenuItem>
-          <Link href={"new/workshop"}>workshop</Link>
-        </DropdownMenuItem>
+        {ALLOWED_TYPES.map((link, idx) => (
+          <DropdownMenuItem key={idx}>
+            <Link href={`new/${link}`}>
+              {link?.charAt(0).toUpperCase() + link?.slice(1)}
+            </Link>
+          </DropdownMenuItem>
+        ))}
       </DropdownMenuContent>
     </DropdownMenu>
   );
