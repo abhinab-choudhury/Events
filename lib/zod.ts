@@ -4,7 +4,7 @@ import { z } from "zod";
 const MAX_FILE_SIZE = 10 * 1024 * 1024; // 10MB
 const ACCEPTED_IMAGE_TYPES = ["image/jpeg", "image/jpg", "image/png"];
 
-const createEventFormSchema = z.object({
+export const createEventFormSchema = z.object({
   title: z.string().min(5, {
     message: "Title must be at least 5 characters.",
   }),
@@ -63,7 +63,7 @@ const createEventFormSchema = z.object({
             required_error: "Please provide respective link",
           })
           .url("Please enter a valid URL"),
-      })
+      }),
     )
     .optional(),
   online_join_link: z.string().url("Please enter a valid URL").optional(),
@@ -82,4 +82,4 @@ const createEventFormSchema = z.object({
   require_approval: z.boolean().default(false),
 });
 
-export { createEventFormSchema };
+export type FormValues = z.infer<typeof createEventFormSchema>;

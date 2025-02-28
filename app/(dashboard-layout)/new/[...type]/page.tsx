@@ -13,18 +13,15 @@ import {
 import { notFound, usePathname, useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { addDays } from "date-fns";
-import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { useForm, FormProvider } from "react-hook-form";
-import { createEventFormSchema } from "@/lib/zod";
+import { createEventFormSchema, FormValues } from "@/lib/zod";
 import BasicDetails from "@/components/form/basic-fileds";
 import EventDateTime from "@/components/form/datetime-fields";
 import EventAgenda from "@/components/form/audience-agenda-fields";
 import EventLinks from "@/components/form/links-fields";
 import { ALLOWED_TYPES, EVENT_TYPE_DESCRIPTIONS } from "@/lib/utils";
-
-type FormValues = z.infer<typeof createEventFormSchema>;
 
 function PageHeader({
   heading,

@@ -12,6 +12,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { FileUpload } from "@/components/ui/file-upload";
+import { UploadDropzone } from "@/lib/uploadthing";
 
 export default function BasicDetails() {
   const { control } = useFormContext();
@@ -48,7 +49,18 @@ export default function BasicDetails() {
           <FormItem>
             <FormLabel className="font-medium">Banner Image</FormLabel>
             <FormControl>
-              <FileUpload onChange={field.onChange} />
+              <UploadDropzone
+                endpoint="imageUploader"
+                onClientUploadComplete={(res) => {
+                  // Do something with the response
+                  console.log("Files: ", res);
+                  alert("Upload Completed");
+                }}
+                onUploadError={(error: Error) => {
+                  // Do something with the error.
+                  alert(`ERROR! ${error.message}`);
+                }}
+              />
             </FormControl>
             <FormDescription>
               Upload an attractive banner image (recommended size: 1200 x 630px)

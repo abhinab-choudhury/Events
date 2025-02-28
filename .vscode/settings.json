@@ -19,5 +19,5 @@
   "[scss]": {
     "editor.defaultFormatter": "esbenp.prettier-vscode"
   },
-  "stylelint.validate": ["css", "scss"],
+  "stylelint.validate": ["css", "scss"]
 }

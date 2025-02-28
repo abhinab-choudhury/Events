@@ -1,14 +1,28 @@
-'use client';
+"use client";
 
-import { motion } from 'framer-motion';
-import Navbar from './navbar';
-import { Calendar, MessageSquareText, Sparkles } from 'lucide-react';
-import Link from 'next/link';
-import { Button } from './ui/button';
-import { ShootingStars } from './ui/shooting-stars';
-import { StarsBackground } from './ui/stars-background';
+import { motion } from "framer-motion";
+import Navbar from "./navbar";
+import { Calendar, MessageSquareText, Sparkles } from "lucide-react";
+import Link from "next/link";
+import { Button } from "./ui/button";
+import { ShootingStars } from "./ui/shooting-stars";
+import { StarsBackground } from "./ui/stars-background";
+import { useEffect, useState } from "react";
+import { cn } from "@/lib/utils";
 
 export function HeroSection() {
+  const [scrolled, setScrolled] = useState(false);
+
+  // Handle scroll effect for navbar
+  useEffect(() => {
+    const handleScroll = () => {
+      setScrolled(window.scrollY > 10);
+    };
+
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
   return (
     <section className="relative min-h-fit w-full bg-gradient-to-b from-slate-50 via-blue-50 to-indigo-50 dark:from-slate-950 dark:via-indigo-950 dark:to-blue-950">
       {/* Fine grid pattern overlay */}
@@ -22,13 +36,22 @@ export function HeroSection() {
         animate={{ opacity: 1, y: 0 }}
         transition={{
           duration: 0.6,
-          ease: 'easeOut',
+          ease: "easeOut",
         }}
-        className="relative z-10 px-4 pt-8 md:pt-12"
+        className="relative z-10 px-4 pt-20 md:pt-16"
       >
         {/* Hero content */}
         <div className="container relative z-20 mx-auto">
-          <Navbar />
+          <div
+            className={cn(
+              "fixed top-0 left-0 right-0 z-50 transition-all duration-300",
+              scrolled ? "shadow-md py-2" : "py-4"
+            )}
+          >
+            <div className="container mx-auto px-4">
+              <Navbar />
+            </div>
+          </div>
 
           {/* Hero section with modern split layout */}
           <div className="mx-auto grid grid-cols-1 max-w-7xl place-content-center items-center gap-8 pb-20 pt-8 md:grid-cols-2 md:gap-12 md:pb-32 md:pt-12">

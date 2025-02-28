@@ -1,6 +1,6 @@
-'use client';
+"use client";
 
-import { cn } from '@/lib/utils';
+import { cn } from "@/lib/utils";
 import {
   BarChart3,
   Calendar,
@@ -8,44 +8,44 @@ import {
   MessageSquareText,
   Shield,
   Zap,
-} from 'lucide-react';
+} from "lucide-react";
 
 export function FeaturesSection() {
   const features = [
     {
-      title: 'AI Event Chatbots',
+      title: "AI Event Chatbots",
       description:
-        'Custom AI assistants that answer attendee questions using your event details through RAG and vector DB technology.',
+        "Custom AI assistants that answer attendee questions using your event details through RAG and vector DB technology.",
       icon: <MessageSquareText className="size-6" />,
     },
     {
-      title: 'Intelligent Dashboard',
+      title: "Intelligent Dashboard",
       description:
-        'Track event metrics, attendee engagement, and conversions with our comprehensive analytics dashboard.',
+        "Track event metrics, attendee engagement, and conversions with our comprehensive analytics dashboard.",
       icon: <BarChart3 className="size-6" />,
     },
     {
-      title: 'Smart Scheduling',
+      title: "Smart Scheduling",
       description:
-        'AI-powered scheduling tools that optimize event timing and activities based on attendee preferences.',
+        "AI-powered scheduling tools that optimize event timing and activities based on attendee preferences.",
       icon: <Calendar className="size-6" />,
     },
     {
-      title: 'Instant Deployment',
+      title: "Instant Deployment",
       description:
-        'Create and deploy event pages with built-in AI chatbots in minutes, not days.',
+        "Create and deploy event pages with built-in AI chatbots in minutes, not days.",
       icon: <Zap className="size-6" />,
     },
     {
-      title: 'Secure Hosting',
+      title: "Secure Hosting",
       description:
-        'Your event data is protected with enterprise-grade security and compliant with privacy regulations.',
+        "Your event data is protected with enterprise-grade security and compliant with privacy regulations.",
       icon: <Shield className="size-6" />,
     },
     {
-      title: 'Custom Branding',
+      title: "Custom Branding",
       description:
-        'Fully customize your event pages and chatbots to match your brand identity and voice.',
+        "Fully customize your event pages and chatbots to match your brand identity and voice.",
       icon: <GalleryVerticalEnd className="size-6" />,
     },
   ];
@@ -55,7 +55,7 @@ export function FeaturesSection() {
       <div className="mx-auto max-w-7xl px-4">
         <div className="mb-16 text-center">
           <h2 className="mb-4 text-3xl font-bold tracking-tight text-slate-900 dark:text-white md:text-4xl">
-            All the tools you need for{' '}
+            All the tools you need for{" "}
             <span className="text-indigo-600 dark:text-indigo-400">
               exceptional events
             </span>
@@ -90,9 +90,9 @@ const Feature = ({
   return (
     <div
       className={cn(
-        'group/feature relative flex flex-col py-10 hover:bg-indigo-100 dark:hover:bg-black lg:border-r',
-        (index === 0 || index === 3) && 'dark:border-neutral-800 lg:border-l',
-        index < 3 && 'dark:border-neutral-800 lg:border-b'
+        "group/feature relative flex flex-col py-10 hover:bg-indigo-100 dark:hover:bg-black lg:border-r",
+        (index === 0 || index === 3) && "dark:border-neutral-800 lg:border-l",
+        index < 3 && "dark:border-neutral-800 lg:border-b",
       )}
     >
       {index < 3 && (

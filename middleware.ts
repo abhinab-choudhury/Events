@@ -4,15 +4,19 @@ import type { NextRequest } from "next/server";
 
 export async function middleware(request: NextRequest) {
   const session = await getToken({ req: request });
+  const pathname = request.nextUrl.pathname;
 
-  // Allow unauthenticated access to /account to prevent infinite redirects
-  if (!session && request.nextUrl.pathname !== "/account") {
+  if (!session) {
     return NextResponse.redirect(new URL("/account", request.url));
+  }
+
+  if (session && pathname === "/account") {
+    return NextResponse.redirect(new URL("/dashboard", request.url));
   }
 
   return NextResponse.next();
 }
 
 export const config = {
-  matcher: ["/dashboard", "/profile", "/settings"],
+  matcher: ["/dashboard", "/profile", "/settings", "/new/(.*)"],
 };

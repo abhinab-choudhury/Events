@@ -32,11 +32,7 @@ export default function EventAgenda() {
               Expected Audience Count
             </FormLabel>
             <FormControl>
-              <Input
-                {...field}
-                type="number"
-                onChange={field.onChange}
-              />
+              <Input {...field} type="number" onChange={field.onChange} />
             </FormControl>
             <FormDescription>
               Estimate how many people you expect to attend

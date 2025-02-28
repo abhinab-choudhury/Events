@@ -1,13 +1,13 @@
-'use client';
+"use client";
 
-import Link from 'next/link';
+import Link from "next/link";
 import {
   Accordion,
   AccordionContent,
   AccordionItem,
   AccordionTrigger,
-} from './ui/accordion';
-import { Button } from './ui/button';
+} from "./ui/accordion";
+import { Button } from "./ui/button";
 
 export function FAQSection() {
   return (
