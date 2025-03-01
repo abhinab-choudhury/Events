@@ -41,7 +41,7 @@ const EventCard = ({ event }: { event: EventType }) => {
   };
 
   return (
-    <div className="flex flex-col h-full bg-white rounded-lg shadow-md overflow-hidden transition-all duration-300 hover:shadow-xl">
+    <div className="flex flex-col h-full bg-white rounded-lg shadow-sm overflow-hidden transition-all duration-300 hover:shadow-md">
       {/* Fixed height for image container */}
       <div className="relative h-48 w-full flex-shrink-0">
         <img
@@ -49,7 +49,7 @@ const EventCard = ({ event }: { event: EventType }) => {
           alt={event.title}
           className="h-full w-full object-cover"
         />
-        <div className="absolute top-0 right-0">
+        <div className="absolute top-2 right-2">
           <span
             className={`px-3 py-1 text-xs font-semibold rounded-full ${
               event.mode === "online"

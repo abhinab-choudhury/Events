@@ -18,6 +18,8 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { signOut, useSession } from "next-auth/react";
 import { Session } from "next-auth";
 import { cn } from "@/lib/utils";
+import { toast } from "sonner";
+import { useRouter } from "next/navigation";
 
 export default function Navbar() {
   const { data: session, status } = useSession();
@@ -94,7 +96,8 @@ export default function Navbar() {
 
 const UserDropdown = ({ session }: { session: Session }) => {
   const { user } = session;
-
+  const router = useRouter();
+  
   return (
     <DropdownMenu>
       <DropdownMenuTrigger className="rounded-full border border-indigo-600">
@@ -124,7 +127,20 @@ const UserDropdown = ({ session }: { session: Session }) => {
         </DropdownMenuItem>
         <DropdownMenuItem className="text-red-500 hover:bg-red-100 dark:hover:bg-red-900">
           <Button
-            onClick={() => signOut()}
+            onClick={async () => {
+              try {
+                const response = await signOut({ redirect: false });
+                if (response) {
+                  toast("You have been logged out successfully. ✅");
+                  router.push("/");
+                }
+              } catch (error) {
+                toast(
+                  "Unable to log out. Please check your connection and try again. ❌"
+                );
+                console.error("Logout error:", error);
+              }
+            }}
             variant={"ghost"}
             className="h-full w-full hover:bg-inherit"
           >

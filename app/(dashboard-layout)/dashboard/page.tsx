@@ -40,24 +40,30 @@ import Link from "next/link";
 import { ChartConfig, ChartContainer } from "@/components/ui/chart";
 import { ALLOWED_TYPES } from "@/lib/utils";
 
+// Define event type
 export type Event = {
   name: string;
-  eventType: "Conference" | "Hackathon" | "Meetup" | "Workshop"; // Restricting to known types
+  eventType: "Conference" | "Hackathon" | "Meetup" | "Workshop";
   startDate: string; // ISO Date format (YYYY-MM-DD)
   endDate: string; // ISO Date format (YYYY-MM-DD)
   participants: number;
   views: number;
 };
 
-// Analytics Data & Config
-const eventAnalyticsData = [
-  { category: "Total Interactions", count: 1260, fill: "hsl(var(--chart-1))" },
+// --------- Mock Data ---------
+const chartData = [
+  { browser: "safari", visitors: 1260, fill: "var(--color-safari)" },
 ];
 
-const chartSettings = {
-  count: { label: "Interactions" },
-  primary: { label: "Event Engagement" },
-};
+const chartConfig = {
+  visitors: {
+    label: "Visitors",
+  },
+  safari: {
+    label: "Safari",
+    color: "hsl(var(--chart-2))",
+  },
+} satisfies ChartConfig;
 
 const events: Event[] = [
   {
@@ -142,18 +148,7 @@ const events: Event[] = [
   },
 ];
 
-const chartData = [
-  { browser: "safari", visitors: 1260, fill: "var(--color-safari)" },
-];
-const chartConfig = {
-  visitors: {
-    label: "Visitors",
-  },
-  safari: {
-    label: "Safari",
-    color: "hsl(var(--chart-2))",
-  },
-} satisfies ChartConfig;
+// --------- Components ---------
 
 // Header Component
 const DashboardHeader = () => (
@@ -166,30 +161,6 @@ const DashboardHeader = () => (
     </p>
   </div>
 );
-
-export default function EventsDashboard() {
-  const { data: user, status } = useSession();
-
-  if (status === "unauthenticated") {
-    redirect("/account");
-  }
-
-  return (
-    <div className="container w-[100%] mx-auto space-y-6">
-      <DashboardHeader />
-
-      <div className="grid lg:grid-cols-3 gap-6 max-h-[80vh]">
-        <div className="lg:col-span-2 space-y-6">
-          <SearchActions />
-          <div className="h-[70vh] w-[85vw] md:w-auto mx-[auto] overflow-scroll rounded-lg">
-            <EventsTable events={events} />
-          </div>
-        </div>
-        <AnalyticsCard />
-      </div>
-    </div>
-  );
-}
 
 // Search and Actions Component
 const SearchActions = () => (
@@ -207,6 +178,29 @@ const SearchActions = () => (
     <NewButton />
   </div>
 );
+
+// New Button Component
+function NewButton() {
+  return (
+    <DropdownMenu>
+      <DropdownMenuTrigger asChild>
+        <Button className="bg-primary hover:bg-primary/90">
+          <PlusIcon className="h-4 w-4 mr-2" />
+          New
+        </Button>
+      </DropdownMenuTrigger>
+      <DropdownMenuContent>
+        {ALLOWED_TYPES.map((link, idx) => (
+          <DropdownMenuItem key={idx}>
+            <Link href={`new/${link}`}>
+              {link?.charAt(0).toUpperCase() + link?.slice(1)}
+            </Link>
+          </DropdownMenuItem>
+        ))}
+      </DropdownMenuContent>
+    </DropdownMenu>
+  );
+}
 
 // Analytics Chart Component
 const AnalyticsCard = () => (
@@ -302,11 +296,15 @@ const EventTableRow = ({ event }: { event: Event }) => {
 
   const { name, endDate, eventType, participants, startDate, views } = event;
   const today = new Date();
-  const start_data = new Date(startDate);
-  const end_data = new Date(endDate);
+  const startDate_date = new Date(startDate);
+  const endDate_date = new Date(endDate);
 
   const status =
-    today > end_data ? "Completed" : today < start_data ? "Upcoming" : "Active";
+    today > endDate_date 
+      ? "Completed" 
+      : today < startDate_date 
+        ? "Upcoming" 
+        : "Active";
 
   return (
     <tr className="border-b border-border/50 hover:bg-muted/50 transition-colors">
@@ -324,13 +322,13 @@ const EventTableRow = ({ event }: { event: Event }) => {
       <td className="px-4 py-3">
         <div className="flex items-center text-muted-foreground">
           <Calendar className="mr-2 h-4 w-4" />
-          {format(new Date(startDate), "dd/mm/yyyy")}
+          {format(new Date(startDate), "dd/MM/yyyy")}
         </div>
       </td>
       <td className="px-4 py-3">
         <div className="flex items-center text-muted-foreground">
           <Calendar className="mr-2 h-4 w-4" />
-          {format(new Date(endDate), "dd/mm/yyyy")}
+          {format(new Date(endDate), "dd/MM/yyyy")}
         </div>
       </td>
       <td className="px-4 py-3 text-right">
@@ -349,6 +347,7 @@ const EventTableRow = ({ event }: { event: Event }) => {
   );
 };
 
+// Events Table Component
 const EventsTable = ({ events }: { events: Event[] }) => (
   <div className="relative rounded-lg backdrop-blur-sm bg-background/10 border-muted">
     <div className="overflow-auto scrollbar-thin">
@@ -391,24 +390,26 @@ const EventsTable = ({ events }: { events: Event[] }) => (
   </div>
 );
 
-function NewButton() {
+export default function EventsDashboard() {
+  const { data: user, status } = useSession();
+
+  if (status === "unauthenticated") {
+    redirect("/account");
+  }
+
   return (
-    <DropdownMenu>
-      <DropdownMenuTrigger asChild>
-        <Button className="bg-primary hover:bg-primary/90">
-          <PlusIcon className="h-4 w-4 mr-2" />
-          New
-        </Button>
-      </DropdownMenuTrigger>
-      <DropdownMenuContent>
-        {ALLOWED_TYPES.map((link, idx) => (
-          <DropdownMenuItem key={idx}>
-            <Link href={`new/${link}`}>
-              {link?.charAt(0).toUpperCase() + link?.slice(1)}
-            </Link>
-          </DropdownMenuItem>
-        ))}
-      </DropdownMenuContent>
-    </DropdownMenu>
+    <div className="container w-full mx-auto space-y-6">
+      <DashboardHeader />
+
+      <div className="grid lg:grid-cols-3 gap-6 max-h-[80vh]">
+        <div className="lg:col-span-2 space-y-6">
+          <SearchActions />
+          <div className="h-[70vh] overflow-auto rounded-lg">
+            <EventsTable events={events} />
+          </div>
+        </div>
+        <AnalyticsCard />
+      </div>
+    </div>
   );
 }

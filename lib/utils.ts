@@ -5,12 +5,7 @@ export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
 }
 
-export const ALLOWED_TYPES = [
-  "conference",
-  "meetup",
-  "workshop",
-  // "hackathon",
-];
+export const ALLOWED_TYPES = ["conference", "meetup", "workshop", "hackathon"];
 
 export const EVENT_TYPE_DESCRIPTIONS = {
   conference: "A large formal gathering where people meet to exchange ideas",

@@ -1,3 +1,16 @@
+
+
+# Setup Instructions
+
+- Get the env-variables
+
+  Services which I use
+  - Google OAuth for Auth
+  - Github OAuth for Auth
+  - Neon DB for Database
+  - UploadThing for File uploads
+  - Rsend for Emails
+
 Here's a **7-day action plan** to complete your **Events AI** project by **March 4**.
 
 ---

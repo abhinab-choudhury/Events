@@ -1,4 +1,5 @@
 import { File } from "buffer";
+import { error } from "console";
 import { z } from "zod";
 
 const MAX_FILE_SIZE = 10 * 1024 * 1024; // 10MB
@@ -8,12 +9,7 @@ export const createEventFormSchema = z.object({
   title: z.string().min(5, {
     message: "Title must be at least 5 characters.",
   }),
-  banner_image: z
-    .instanceof(File, { message: "Please select an image file" })
-    .refine((file) => file.size <= MAX_FILE_SIZE, { message: "Max Size 20M" })
-    .refine((file) => ACCEPTED_IMAGE_TYPES.includes(file.type), {
-      message: "Image form not supported",
-    }),
+  banner_image: z.string().url({ message: "Invalid Image URL" }),
   description: z.string().min(20, {
     message: "Description must be at least 20 characters.",
   }),
@@ -63,7 +59,7 @@ export const createEventFormSchema = z.object({
             required_error: "Please provide respective link",
           })
           .url("Please enter a valid URL"),
-      }),
+      })
     )
     .optional(),
   online_join_link: z.string().url("Please enter a valid URL").optional(),

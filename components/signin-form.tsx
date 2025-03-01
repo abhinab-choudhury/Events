@@ -3,22 +3,38 @@
 import { signIn } from "next-auth/react";
 import { cn } from "@/lib/utils";
 import { IconBrandGithub, IconBrandGoogle } from "@tabler/icons-react";
+import { toast } from "sonner";
+import { useRouter } from "next/navigation";
+import { AppRouterInstance } from "next/dist/shared/lib/app-router-context.shared-runtime";
 
-const handleSignIn = async (provider: "github" | "google") => {
+const handleSignIn = async (provider: "github" | "google", router: AppRouterInstance) => {
   try {
-    await signIn(provider);
+    const response = await signIn(provider, {
+      redirect: false,
+    });
+
+    if (!response?.error) {
+      toast("Sign-in Successfully ✅");
+      router.push("/dashboard");
+    } else {
+      toast("Sign-in failed ❌");
+      console.error("Sign-in error:", response.error);
+    }
   } catch (error) {
+    toast("Sign-in failed ❌");
     console.error("Sign-in failed:", error);
   }
 };
 
 export default function SignInForm() {
+  const router = useRouter();
+
   return (
     <div className="grid place-content-center">
       <div className="my-8 w-72">
         <div className="flex flex-col space-y-4">
           <button
-            onClick={() => handleSignIn("github")}
+            onClick={() => handleSignIn("github", router)}
             className="group/btn relative flex h-10 w-full items-center justify-center space-x-2 rounded-md bg-gray-50 px-4 font-medium text-black shadow-input dark:bg-zinc-900 dark:shadow-[0px_0px_1px_1px_var(--neutral-800)]"
             type="submit"
           >
