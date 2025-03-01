@@ -114,7 +114,7 @@ export default function BasicDetails() {
                     }}
                     config={{ cn: twMerge }}
                     onClientUploadComplete={(
-                      res: ClientUploadedFileData<{ uploadedBy: string }>[]
+                      res: ClientUploadedFileData<{ uploadedBy: string }>[],
                     ) => {
                       setUploadComplete(true);
                       setUploadedImageUrl(res[0].ufsUrl as string);

@@ -44,7 +44,7 @@ export default function Navbar() {
         "z-50 w-full border-black mx-auto transition-all duration-100",
         scrolled
           ? "fixed top-0 left-0 right-0 w-full border-slate-200 bg-white/45 backdrop-blur-2xl shadow-sm dark:border-slate-800 dark:bg-slate-900/95"
-          : "rounded-full max-w-7xl bg-white/80 dark:bg-slate-900/80"
+          : "rounded-full max-w-7xl bg-white/80 dark:bg-slate-900/80",
       )}
     >
       <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
@@ -97,7 +97,7 @@ export default function Navbar() {
 const UserDropdown = ({ session }: { session: Session }) => {
   const { user } = session;
   const router = useRouter();
-  
+
   return (
     <DropdownMenu>
       <DropdownMenuTrigger className="rounded-full border border-indigo-600">
@@ -136,7 +136,7 @@ const UserDropdown = ({ session }: { session: Session }) => {
                 }
               } catch (error) {
                 toast(
-                  "Unable to log out. Please check your connection and try again. ❌"
+                  "Unable to log out. Please check your connection and try again. ❌",
                 );
                 console.error("Logout error:", error);
               }

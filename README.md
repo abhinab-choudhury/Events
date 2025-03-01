@@ -1,10 +1,9 @@
-
-
 # Setup Instructions
 
 - Get the env-variables
 
   Services which I use
+
   - Google OAuth for Auth
   - Github OAuth for Auth
   - Neon DB for Database

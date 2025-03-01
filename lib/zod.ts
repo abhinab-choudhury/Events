@@ -59,7 +59,7 @@ export const createEventFormSchema = z.object({
             required_error: "Please provide respective link",
           })
           .url("Please enter a valid URL"),
-      })
+      }),
     )
     .optional(),
   online_join_link: z.string().url("Please enter a valid URL").optional(),

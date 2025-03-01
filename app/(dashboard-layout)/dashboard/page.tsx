@@ -300,10 +300,10 @@ const EventTableRow = ({ event }: { event: Event }) => {
   const endDate_date = new Date(endDate);
 
   const status =
-    today > endDate_date 
-      ? "Completed" 
-      : today < startDate_date 
-        ? "Upcoming" 
+    today > endDate_date
+      ? "Completed"
+      : today < startDate_date
+        ? "Upcoming"
         : "Active";
 
   return (

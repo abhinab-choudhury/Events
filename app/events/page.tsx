@@ -36,7 +36,7 @@ export default function EventsPage() {
   const filteredEvents = mockEvents.filter(
     (event) =>
       event.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      event.description.toLowerCase().includes(searchQuery.toLowerCase())
+      event.description.toLowerCase().includes(searchQuery.toLowerCase()),
   );
 
   return (
@@ -45,7 +45,7 @@ export default function EventsPage() {
       <div
         className={cn(
           "fixed top-0 left-0 right-0 z-50 transition-all duration-300",
-          scrolled ? "shadow-md py-2" : "py-4"
+          scrolled ? "shadow-md py-2" : "py-4",
         )}
       >
         <div className="container mx-auto px-4">
@@ -158,7 +158,7 @@ export default function EventsPage() {
                   "gap-6",
                   view === "grid"
                     ? "grid sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3"
-                    : "flex flex-col space-y-6"
+                    : "flex flex-col space-y-6",
                 )}
               >
                 {filteredEvents.map((event, idx) => (

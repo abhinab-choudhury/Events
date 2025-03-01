@@ -34,20 +34,25 @@ export default function EventDateTime() {
   const handleStartTimeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const startTime = e.target.value;
     setValue("start_time", startTime);
-    
+
     const currentEndTime = watch("end_time") || "";
     if (!currentEndTime || startTime >= currentEndTime) {
       // If end time is empty or before start time, set it to 1 hour after start time
       const [hours, minutes] = startTime.split(":");
       const endHours = parseInt(hours) + 1 > 23 ? 23 : parseInt(hours) + 1;
-      setValue("end_time", `${endHours.toString().padStart(2, "0")}:${minutes}`);
+      setValue(
+        "end_time",
+        `${endHours.toString().padStart(2, "0")}:${minutes}`,
+      );
     }
   };
 
   return (
     <div className="space-y-8 rounded-lg bg-slate-50 p-6">
-      <h3 className="text-xl font-semibold text-slate-800 mb-4">Date & Time Details</h3>
-      
+      <h3 className="text-xl font-semibold text-slate-800 mb-4">
+        Date & Time Details
+      </h3>
+
       <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
         {/* Date Selection - Different for Hackathon vs Other Events */}
         {isHackathon ? (
@@ -56,7 +61,9 @@ export default function EventDateTime() {
             name="date_range.from"
             render={({ field }) => (
               <FormItem className="flex flex-col">
-                <FormLabel className="text-slate-700 font-medium mb-2">Event Date</FormLabel>
+                <FormLabel className="text-slate-700 font-medium mb-2">
+                  Event Date
+                </FormLabel>
                 <Popover>
                   <PopoverTrigger asChild>
                     <FormControl>
@@ -64,7 +71,7 @@ export default function EventDateTime() {
                         variant="outline"
                         className={cn(
                           "w-full justify-start text-left font-normal border-slate-300 hover:bg-slate-100",
-                          !field.value && "text-slate-500"
+                          !field.value && "text-slate-500",
                         )}
                       >
                         <CalendarIcon className="mr-2 h-4 w-4 text-slate-500" />
@@ -76,7 +83,10 @@ export default function EventDateTime() {
                       </Button>
                     </FormControl>
                   </PopoverTrigger>
-                  <PopoverContent className="w-auto p-0 bg-white shadow-lg rounded-md border border-slate-200" align="start">
+                  <PopoverContent
+                    className="w-auto p-0 bg-white shadow-lg rounded-md border border-slate-200"
+                    align="start"
+                  >
                     <Calendar
                       mode="single"
                       selected={field.value}
@@ -100,7 +110,9 @@ export default function EventDateTime() {
             name="date_range"
             render={({ field }) => (
               <FormItem className="flex-1">
-                <FormLabel className="text-slate-700 font-medium mb-2">Event Duration</FormLabel>
+                <FormLabel className="text-slate-700 font-medium mb-2">
+                  Event Duration
+                </FormLabel>
                 <Popover>
                   <PopoverTrigger asChild>
                     <FormControl>
@@ -108,7 +120,7 @@ export default function EventDateTime() {
                         variant="outline"
                         className={cn(
                           "w-full justify-start text-left font-normal border-slate-300 hover:bg-slate-100 h-auto py-3",
-                          !field.value && "text-slate-500"
+                          !field.value && "text-slate-500",
                         )}
                       >
                         <CalendarIcon className="mr-2 h-5 w-5 text-slate-500" />
@@ -116,10 +128,15 @@ export default function EventDateTime() {
                           field.value.to ? (
                             <span className="flex flex-col items-start">
                               <span className="font-medium">
-                                {format(field.value.from, "MMM dd")} - {format(field.value.to, "MMM dd, yyyy")}
+                                {format(field.value.from, "MMM dd")} -{" "}
+                                {format(field.value.to, "MMM dd, yyyy")}
                               </span>
                               <span className="text-xs text-slate-500 mt-1">
-                                {Math.ceil((field.value.to - field.value.from) / (1000 * 60 * 60 * 24))} days
+                                {Math.ceil(
+                                  (field.value.to - field.value.from) /
+                                    (1000 * 60 * 60 * 24),
+                                )}{" "}
+                                days
                               </span>
                             </span>
                           ) : (
@@ -131,9 +148,14 @@ export default function EventDateTime() {
                       </Button>
                     </FormControl>
                   </PopoverTrigger>
-                  <PopoverContent className="w-auto p-0 bg-white shadow-lg rounded-md border border-slate-200" align="start">
+                  <PopoverContent
+                    className="w-auto p-0 bg-white shadow-lg rounded-md border border-slate-200"
+                    align="start"
+                  >
                     <div className="p-3 border-b border-slate-100">
-                      <h4 className="font-medium text-slate-700">Select Date Range</h4>
+                      <h4 className="font-medium text-slate-700">
+                        Select Date Range
+                      </h4>
                     </div>
                     <Calendar
                       initialFocus
@@ -157,14 +179,18 @@ export default function EventDateTime() {
 
         {/* Event Time Inputs */}
         <div className="space-y-6">
-          <FormLabel className="text-slate-700 font-medium block mb-2">Event Time</FormLabel>
+          <FormLabel className="text-slate-700 font-medium block mb-2">
+            Event Time
+          </FormLabel>
           <div className="flex gap-4">
             <FormField
               control={control}
               name="start_time"
               render={({ field }) => (
                 <FormItem className="flex-1">
-                  <FormLabel className="text-slate-600 text-sm block mb-1">Start</FormLabel>
+                  <FormLabel className="text-slate-600 text-sm block mb-1">
+                    Start
+                  </FormLabel>
                   <FormControl>
                     <Input
                       type="time"
@@ -183,7 +209,9 @@ export default function EventDateTime() {
               name="end_time"
               render={({ field }) => (
                 <FormItem className="flex-1">
-                  <FormLabel className="text-slate-600 text-sm block mb-1">End</FormLabel>
+                  <FormLabel className="text-slate-600 text-sm block mb-1">
+                    End
+                  </FormLabel>
                   <FormControl>
                     <Input
                       type="time"
@@ -209,7 +237,9 @@ export default function EventDateTime() {
           name="mode"
           render={({ field }) => (
             <FormItem className="space-y-4">
-              <FormLabel className="text-slate-700 font-medium">Event Format</FormLabel>
+              <FormLabel className="text-slate-700 font-medium">
+                Event Format
+              </FormLabel>
               <FormControl>
                 <RadioGroup
                   onValueChange={field.onChange}
@@ -220,31 +250,49 @@ export default function EventDateTime() {
                     <FormControl>
                       <RadioGroupItem value="online" className="sr-only" />
                     </FormControl>
-                    <VideoIcon className={`h-6 w-6 ${field.value === "online" ? "text-indigo-600" : "text-slate-500"}`} />
-                    <FormLabel className={`font-medium cursor-pointer ${field.value === "online" ? "text-indigo-600" : "text-slate-700"}`}>
+                    <VideoIcon
+                      className={`h-6 w-6 ${field.value === "online" ? "text-indigo-600" : "text-slate-500"}`}
+                    />
+                    <FormLabel
+                      className={`font-medium cursor-pointer ${field.value === "online" ? "text-indigo-600" : "text-slate-700"}`}
+                    >
                       Online
                     </FormLabel>
-                    <span className="text-xs text-slate-500 text-center">Virtual attendance only</span>
+                    <span className="text-xs text-slate-500 text-center">
+                      Virtual attendance only
+                    </span>
                   </FormItem>
                   <FormItem className="flex flex-col items-center space-y-2 bg-white p-4 rounded-lg border border-slate-200 hover:border-indigo-300 transition-all duration-200 cursor-pointer">
                     <FormControl>
                       <RadioGroupItem value="offline" className="sr-only" />
                     </FormControl>
-                    <MapPinIcon className={`h-6 w-6 ${field.value === "offline" ? "text-indigo-600" : "text-slate-500"}`} />
-                    <FormLabel className={`font-medium cursor-pointer ${field.value === "offline" ? "text-indigo-600" : "text-slate-700"}`}>
+                    <MapPinIcon
+                      className={`h-6 w-6 ${field.value === "offline" ? "text-indigo-600" : "text-slate-500"}`}
+                    />
+                    <FormLabel
+                      className={`font-medium cursor-pointer ${field.value === "offline" ? "text-indigo-600" : "text-slate-700"}`}
+                    >
                       In-Person
                     </FormLabel>
-                    <span className="text-xs text-slate-500 text-center">Physical location only</span>
+                    <span className="text-xs text-slate-500 text-center">
+                      Physical location only
+                    </span>
                   </FormItem>
                   <FormItem className="flex flex-col items-center space-y-2 bg-white p-4 rounded-lg border border-slate-200 hover:border-indigo-300 transition-all duration-200 cursor-pointer">
                     <FormControl>
                       <RadioGroupItem value="hybrid" className="sr-only" />
                     </FormControl>
-                    <UsersIcon className={`h-6 w-6 ${field.value === "hybrid" ? "text-indigo-600" : "text-slate-500"}`} />
-                    <FormLabel className={`font-medium cursor-pointer ${field.value === "hybrid" ? "text-indigo-600" : "text-slate-700"}`}>
+                    <UsersIcon
+                      className={`h-6 w-6 ${field.value === "hybrid" ? "text-indigo-600" : "text-slate-500"}`}
+                    />
+                    <FormLabel
+                      className={`font-medium cursor-pointer ${field.value === "hybrid" ? "text-indigo-600" : "text-slate-700"}`}
+                    >
                       Hybrid
                     </FormLabel>
-                    <span className="text-xs text-slate-500 text-center">Both online and in-person</span>
+                    <span className="text-xs text-slate-500 text-center">
+                      Both online and in-person
+                    </span>
                   </FormItem>
                 </RadioGroup>
               </FormControl>
@@ -268,10 +316,10 @@ export default function EventDateTime() {
                   Venue Location
                 </FormLabel>
                 <FormControl>
-                  <Input 
-                    placeholder="123 Main St, City, Country or Google Maps Link" 
+                  <Input
+                    placeholder="123 Main St, City, Country or Google Maps Link"
                     className="border-slate-300 focus:ring-1 focus:ring-indigo-500 focus:border-indigo-500"
-                    {...field} 
+                    {...field}
                   />
                 </FormControl>
                 <FormDescription className="text-slate-500 text-sm mt-2">
@@ -295,14 +343,15 @@ export default function EventDateTime() {
                   Virtual Meeting Link
                 </FormLabel>
                 <FormControl>
-                  <Input 
-                    placeholder="https://zoom.us/meeting/..." 
+                  <Input
+                    placeholder="https://zoom.us/meeting/..."
                     className="border-slate-300 focus:ring-1 focus:ring-indigo-500 focus:border-indigo-500"
-                    {...field} 
+                    {...field}
                   />
                 </FormControl>
                 <FormDescription className="text-slate-500 text-sm mt-2">
-                  Provide a link for online participants to join the event (Zoom, Google Meet, Microsoft Teams, etc.)
+                  Provide a link for online participants to join the event
+                  (Zoom, Google Meet, Microsoft Teams, etc.)
                 </FormDescription>
                 <FormMessage className="text-red-500" />
               </FormItem>

@@ -7,7 +7,10 @@ import { toast } from "sonner";
 import { useRouter } from "next/navigation";
 import { AppRouterInstance } from "next/dist/shared/lib/app-router-context.shared-runtime";
 
-const handleSignIn = async (provider: "github" | "google", router: AppRouterInstance) => {
+const handleSignIn = async (
+  provider: "github" | "google",
+  router: AppRouterInstance,
+) => {
   try {
     const response = await signIn(provider, {
       redirect: false,
