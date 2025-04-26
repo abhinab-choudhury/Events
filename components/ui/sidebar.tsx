@@ -4,6 +4,7 @@ import Link, { LinkProps } from "next/link";
 import React, { useState, createContext, useContext } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { IconMenu2, IconX } from "@tabler/icons-react";
+import { usePathname } from "next/navigation";
 
 interface Links {
   label: string;
@@ -93,7 +94,7 @@ export const DesktopSidebar = ({
           className,
         )}
         animate={{
-          width: animate ? (open ? "230px" : "60px") : "300px",
+          width: animate ? (open ? "300px" : "60px") : "300px",
         }}
         onMouseEnter={() => setOpen(true)}
         onMouseLeave={() => setOpen(false)}
@@ -167,12 +168,14 @@ export const SidebarLink = ({
   props?: LinkProps;
 }) => {
   const { open, animate } = useSidebar();
+  const pathname = usePathname();
+
   return (
     <Link
       onClick={fn}
       href={link.href}
       className={cn(
-        "flex items-center justify-start gap-2  group/sidebar py-2",
+        "flex items-center justify-start gap-2  group/sidebar py-2 w-fit px-1",
         className,
       )}
       {...props}
@@ -184,9 +187,11 @@ export const SidebarLink = ({
           display: animate ? (open ? "inline-block" : "none") : "inline-block",
           opacity: animate ? (open ? 1 : 0) : 1,
         }}
-        className="text-neutral-700 dark:text-neutral-200 text-sm group-hover/sidebar:translate-x-1 transition duration-150 whitespace-pre inline-block !p-0 !m-0"
+        className={cn("text-neutral-700 dark:text-neutral-200 text-sm group-hover/sidebar:translate-x-1 transition duration-150 whitespace-pre inline-block !p-0 !m-0")}
       >
-        {link.label}
+          <span className={cn("p-2",pathname === link.href ? "bg-gray-800 text-white dark:text-black dark:bg-white rounded-md" : "",)}>
+          {link.label}
+        </span>
       </motion.span>
     </Link>
   );

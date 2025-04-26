@@ -5,29 +5,49 @@ import { cn } from "@/lib/utils";
 import { IconBrandGithub, IconBrandGoogle } from "@tabler/icons-react";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
-import { AppRouterInstance } from "next/dist/shared/lib/app-router-context.shared-runtime";
 
-const handleSignIn = async (
-  provider: "github" | "google",
-  router: AppRouterInstance,
-) => {
-  try {
-    const response = await signIn(provider, {
-      redirect: false,
-    });
+export function SignInButton({ provider }: { provider: "google" | "github" }) {
+  const router = useRouter();
 
-    if (!response?.error) {
-      toast("Sign-in Successfully ✅");
-      router.push("/dashboard");
+  const handleSignIn = async (provider: "github" | "google") => {
+    const response = await signIn(provider, { redirect: false });
+
+    if (response?.error) {
+      toast("Sign-in failed");
+      console.log("Sign-in error:", response?.error);
     } else {
-      toast("Sign-in failed ❌");
-      console.error("Sign-in error:", response.error);
+      toast("Signed in successfully");
+      setTimeout(() => {
+        router.push("/dashboard");
+      }, 1000);
     }
-  } catch (error) {
-    toast("Sign-in failed ❌");
-    console.error("Sign-in failed:", error);
-  }
-};
+  };
+
+  return (
+    <button
+      onClick={() => handleSignIn(provider)}
+      className="group/btn relative flex h-10 w-full items-center justify-center space-x-2 rounded-md bg-gray-50 px-4 font-medium text-black shadow-input dark:bg-zinc-900 dark:shadow-[0px_0px_1px_1px_var(--neutral-800)]"
+      type="submit"
+    >
+      {provider === "github" ? (
+        <>
+          <IconBrandGithub className="h-4 w-4 text-neutral-800 dark:text-neutral-300" />
+          <span className="text-sm text-neutral-700 dark:text-neutral-300">
+            Continue with GitHub
+          </span>
+        </>
+      ) : (
+        <>
+          <IconBrandGoogle className="h-4 w-4 text-neutral-800 dark:text-neutral-300" />
+          <span className="text-sm text-neutral-700 dark:text-neutral-300">
+            Continue with Google
+          </span>
+        </>
+      )}
+      <BottomGradient />
+    </button>
+  );
+}
 
 export default function SignInForm() {
   const router = useRouter();
@@ -36,28 +56,8 @@ export default function SignInForm() {
     <div className="grid place-content-center">
       <div className="my-8 w-72">
         <div className="flex flex-col space-y-4">
-          <button
-            onClick={() => handleSignIn("github", router)}
-            className="group/btn relative flex h-10 w-full items-center justify-center space-x-2 rounded-md bg-gray-50 px-4 font-medium text-black shadow-input dark:bg-zinc-900 dark:shadow-[0px_0px_1px_1px_var(--neutral-800)]"
-            type="submit"
-          >
-            <IconBrandGithub className="h-4 w-4 text-neutral-800 dark:text-neutral-300" />
-            <span className="text-sm text-neutral-700 dark:text-neutral-300">
-              Continue with GitHub
-            </span>
-            <BottomGradient />
-          </button>
-          <button
-            onClick={() => handleSignIn("google")}
-            className="group/btn relative flex h-10 w-full items-center justify-center space-x-2 rounded-md bg-gray-50 px-4 font-medium text-black shadow-input dark:bg-zinc-900 dark:shadow-[0px_0px_1px_1px_var(--neutral-800)]"
-            type="submit"
-          >
-            <IconBrandGoogle className="h-4 w-4 text-neutral-800 dark:text-neutral-300" />
-            <span className="text-sm text-neutral-700 dark:text-neutral-300">
-              Continue with Google
-            </span>
-            <BottomGradient />
-          </button>
+          <SignInButton provider="github" />
+          <SignInButton provider="google" />
         </div>
       </div>
     </div>

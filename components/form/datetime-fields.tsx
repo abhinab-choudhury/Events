@@ -1,6 +1,6 @@
 "use client";
 
-import { useFormContext } from "react-hook-form";
+import { useFormContext, useWatch } from "react-hook-form";
 import {
   FormField,
   FormItem,
@@ -24,28 +24,28 @@ import { format } from "date-fns";
 import { usePathname } from "next/navigation";
 
 export default function EventDateTime() {
-  const { control, watch, setValue } = useFormContext();
+  const { control, setValue } = useFormContext();
   const pathname = usePathname();
   const segments = pathname.split("/").filter(Boolean);
   const isHackathon = segments.includes("hackathon");
-  const eventMode = watch("mode");
+  const eventMode = useWatch({ control, name: "mode" }) || "";
 
-  // Set end time when start time changes to ensure end time is after start time
-  const handleStartTimeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const startTime = e.target.value;
-    setValue("start_time", startTime);
+  // // Set end time when start time changes to ensure end time is after start time
+  // const handleStartTimeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  //   const startTime = e.target.value;
+  //   setValue("start_time", startTime);
 
-    const currentEndTime = watch("end_time") || "";
-    if (!currentEndTime || startTime >= currentEndTime) {
-      // If end time is empty or before start time, set it to 1 hour after start time
-      const [hours, minutes] = startTime.split(":");
-      const endHours = parseInt(hours) + 1 > 23 ? 23 : parseInt(hours) + 1;
-      setValue(
-        "end_time",
-        `${endHours.toString().padStart(2, "0")}:${minutes}`,
-      );
-    }
-  };
+  //   const currentEndTime = watch("end_time") || "";
+  //   if (!currentEndTime || startTime >= currentEndTime) {
+  //     // If end time is empty or before start time, set it to 1 hour after start time
+  //     const [hours, minutes] = startTime.split(":");
+  //     const endHours = parseInt(hours) + 1 > 23 ? 23 : parseInt(hours) + 1;
+  //     setValue(
+  //       "end_time",
+  //       `${endHours.toString().padStart(2, "0")}:${minutes}`
+  //     );
+  //   }
+  // };
 
   return (
     <div className="space-y-8 rounded-lg bg-slate-50 p-6">
@@ -53,9 +53,9 @@ export default function EventDateTime() {
         Date & Time Details
       </h3>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+      <div className="space-y-5">
         {/* Date Selection - Different for Hackathon vs Other Events */}
-        {isHackathon ? (
+        {!isHackathon ? (
           <FormField
             control={control}
             name="date_range.from"
@@ -98,7 +98,7 @@ export default function EventDateTime() {
                   </PopoverContent>
                 </Popover>
                 <FormDescription className="text-slate-500 text-sm mt-2">
-                  The date when your hackathon will take place
+                  The date when your event will take place
                 </FormDescription>
                 <FormMessage className="text-red-500" />
               </FormItem>
@@ -126,19 +126,19 @@ export default function EventDateTime() {
                         <CalendarIcon className="mr-2 h-5 w-5 text-slate-500" />
                         {field.value?.from ? (
                           field.value.to ? (
-                            <span className="flex flex-col items-start">
+                            <>
                               <span className="font-medium">
                                 {format(field.value.from, "MMM dd")} -{" "}
                                 {format(field.value.to, "MMM dd, yyyy")}
                               </span>
-                              <span className="text-xs text-slate-500 mt-1">
+                              <span className="text-xs text-slate-500 ml-2">
                                 {Math.ceil(
                                   (field.value.to - field.value.from) /
                                     (1000 * 60 * 60 * 24),
                                 )}{" "}
                                 days
                               </span>
-                            </span>
+                            </>
                           ) : (
                             format(field.value.from, "MMMM d, yyyy")
                           )
@@ -178,56 +178,59 @@ export default function EventDateTime() {
         )}
 
         {/* Event Time Inputs */}
-        <div className="space-y-6">
-          <FormLabel className="text-slate-700 font-medium block mb-2">
-            Event Time
-          </FormLabel>
-          <div className="flex gap-4">
-            <FormField
-              control={control}
-              name="start_time"
-              render={({ field }) => (
-                <FormItem className="flex-1">
-                  <FormLabel className="text-slate-600 text-sm block mb-1">
-                    Start
-                  </FormLabel>
-                  <FormControl>
-                    <Input
-                      type="time"
-                      className="block w-full px-3 py-2 border border-slate-300 rounded-md shadow-sm focus:ring-1 focus:ring-indigo-500 focus:border-indigo-500"
-                      {...field}
-                      onChange={handleStartTimeChange}
-                    />
-                  </FormControl>
-                  <FormMessage className="text-red-500 text-xs mt-1" />
-                </FormItem>
-              )}
-            />
+        {!isHackathon && (
+          <div className="space-y-6">
+            <FormLabel className="text-slate-700 font-medium block mb-2">
+              Event Time
+            </FormLabel>
+            <div className="flex gap-4">
+              <FormField
+                control={control}
+                name="start_time"
+                render={({ field }) => (
+                  <FormItem className="flex-1">
+                    <FormLabel className="text-slate-600 text-sm block mb-1">
+                      Start
+                    </FormLabel>
+                    <FormControl>
+                      <Input
+                        type="time"
+                        className="block w-full px-3 py-2 border border-slate-300 rounded-md shadow-sm focus:ring-1 focus:ring-indigo-500 focus:border-indigo-500"
+                        {...field}
+                        value={field.value || ""}
+                      />
+                    </FormControl>
+                    <FormMessage className="text-red-500 text-xs mt-1" />
+                  </FormItem>
+                )}
+              />
 
-            <FormField
-              control={control}
-              name="end_time"
-              render={({ field }) => (
-                <FormItem className="flex-1">
-                  <FormLabel className="text-slate-600 text-sm block mb-1">
-                    End
-                  </FormLabel>
-                  <FormControl>
-                    <Input
-                      type="time"
-                      className="block w-full px-3 py-2 border border-slate-300 rounded-md shadow-sm focus:ring-1 focus:ring-indigo-500 focus:border-indigo-500"
-                      {...field}
-                    />
-                  </FormControl>
-                  <FormMessage className="text-red-500 text-xs mt-1" />
-                </FormItem>
-              )}
-            />
+              <FormField
+                control={control}
+                name="end_time"
+                render={({ field }) => (
+                  <FormItem className="flex-1">
+                    <FormLabel className="text-slate-600 text-sm block mb-1">
+                      End
+                    </FormLabel>
+                    <FormControl>
+                      <Input
+                        type="time"
+                        className="block w-full px-3 py-2 border border-slate-300 rounded-md shadow-sm focus:ring-1 focus:ring-indigo-500 focus:border-indigo-500"
+                        {...field}
+                        value={field.value || ""}
+                      />
+                    </FormControl>
+                    <FormMessage className="text-red-500 text-xs mt-1" />
+                  </FormItem>
+                )}
+              />
+            </div>
+            <FormDescription className="text-slate-500 text-sm">
+              All times are in your local timezone
+            </FormDescription>
           </div>
-          <FormDescription className="text-slate-500 text-sm">
-            All times are in your local timezone
-          </FormDescription>
-        </div>
+        )}
       </div>
 
       {/* Event Mode Input */}
@@ -244,55 +247,73 @@ export default function EventDateTime() {
                 <RadioGroup
                   onValueChange={field.onChange}
                   defaultValue={field.value}
+                  value={field.value}
                   className="grid grid-cols-1 md:grid-cols-3 gap-4 pt-2"
                 >
                   <FormItem className="flex flex-col items-center space-y-2 bg-white p-4 rounded-lg border border-slate-200 hover:border-indigo-300 transition-all duration-200 cursor-pointer">
                     <FormControl>
-                      <RadioGroupItem value="online" className="sr-only" />
+                      <RadioGroupItem
+                        value="online"
+                        id="op1"
+                        className="hidden"
+                      />
                     </FormControl>
-                    <VideoIcon
-                      className={`h-6 w-6 ${field.value === "online" ? "text-indigo-600" : "text-slate-500"}`}
-                    />
-                    <FormLabel
-                      className={`font-medium cursor-pointer ${field.value === "online" ? "text-indigo-600" : "text-slate-700"}`}
+                    <label
+                      htmlFor="op1"
+                      className={`font-medium cursor-pointer flex flex-col justify-center align-middle items-center gap-2 ${field.value === "online" ? "text-indigo-600" : "text-slate-700"}`}
                     >
+                      <VideoIcon
+                        className={`h-6 w-6 ${field.value === "online" ? "text-indigo-600" : "text-slate-500"}`}
+                      />
                       Online
-                    </FormLabel>
-                    <span className="text-xs text-slate-500 text-center">
-                      Virtual attendance only
-                    </span>
+                      <span className="text-xs text-slate-500 text-center">
+                        Virtual attendance only
+                      </span>
+                    </label>
                   </FormItem>
+
                   <FormItem className="flex flex-col items-center space-y-2 bg-white p-4 rounded-lg border border-slate-200 hover:border-indigo-300 transition-all duration-200 cursor-pointer">
                     <FormControl>
-                      <RadioGroupItem value="offline" className="sr-only" />
+                      <RadioGroupItem
+                        value="offline"
+                        id="op2"
+                        className="hidden"
+                      />
                     </FormControl>
-                    <MapPinIcon
-                      className={`h-6 w-6 ${field.value === "offline" ? "text-indigo-600" : "text-slate-500"}`}
-                    />
-                    <FormLabel
-                      className={`font-medium cursor-pointer ${field.value === "offline" ? "text-indigo-600" : "text-slate-700"}`}
+                    <label
+                      htmlFor="op2"
+                      className={`font-medium cursor-pointer flex flex-col justify-center align-middle items-center gap-2 ${field.value === "offline" ? "text-indigo-600" : "text-slate-700"}`}
                     >
+                      <MapPinIcon
+                        className={`h-6 w-6 ${field.value === "offline" ? "text-indigo-600" : "text-slate-500"}`}
+                      />
                       In-Person
-                    </FormLabel>
-                    <span className="text-xs text-slate-500 text-center">
-                      Physical location only
-                    </span>
+                      <span className="text-xs text-slate-500 text-center">
+                        Physical location only
+                      </span>
+                    </label>
                   </FormItem>
+
                   <FormItem className="flex flex-col items-center space-y-2 bg-white p-4 rounded-lg border border-slate-200 hover:border-indigo-300 transition-all duration-200 cursor-pointer">
                     <FormControl>
-                      <RadioGroupItem value="hybrid" className="sr-only" />
+                      <RadioGroupItem
+                        value="hybrid"
+                        id="op3"
+                        className="hidden"
+                      />
                     </FormControl>
-                    <UsersIcon
-                      className={`h-6 w-6 ${field.value === "hybrid" ? "text-indigo-600" : "text-slate-500"}`}
-                    />
-                    <FormLabel
-                      className={`font-medium cursor-pointer ${field.value === "hybrid" ? "text-indigo-600" : "text-slate-700"}`}
+                    <label
+                      htmlFor="op3"
+                      className={`font-medium cursor-pointer flex flex-col justify-center align-middle items-center gap-2 ${field.value === "hybrid" ? "text-indigo-600" : "text-slate-700"}`}
                     >
+                      <UsersIcon
+                        className={`h-6 w-6 ${field.value === "hybrid" ? "text-indigo-600" : "text-slate-500"}`}
+                      />
                       Hybrid
-                    </FormLabel>
-                    <span className="text-xs text-slate-500 text-center">
-                      Both online and in-person
-                    </span>
+                      <span className="text-xs text-slate-500 text-center">
+                        Both online and in-person
+                      </span>
+                    </label>
                   </FormItem>
                 </RadioGroup>
               </FormControl>
@@ -322,9 +343,9 @@ export default function EventDateTime() {
                     {...field}
                   />
                 </FormControl>
-                <FormDescription className="text-slate-500 text-sm mt-2">
+                <div className="text-slate-500 text-sm mt-2">
                   Enter the physical address where the event will take place
-                </FormDescription>
+                </div>
                 <FormMessage className="text-red-500" />
               </FormItem>
             )}
@@ -349,10 +370,10 @@ export default function EventDateTime() {
                     {...field}
                   />
                 </FormControl>
-                <FormDescription className="text-slate-500 text-sm mt-2">
+                <div className="text-slate-500 text-sm mt-2">
                   Provide a link for online participants to join the event
                   (Zoom, Google Meet, Microsoft Teams, etc.)
-                </FormDescription>
+                </div>
                 <FormMessage className="text-red-500" />
               </FormItem>
             )}

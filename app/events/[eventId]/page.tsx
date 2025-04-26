@@ -17,7 +17,7 @@ import {
   Info,
   Sparkles,
 } from "lucide-react";
-import { mockEvents } from "@/lib/mock-data";
+import { mockEvents } from "@/lib/mockData";
 import { Badge } from "@/components/ui/badge";
 import {
   Card,

@@ -9,9 +9,11 @@ import { ShootingStars } from "./ui/shooting-stars";
 import { StarsBackground } from "./ui/stars-background";
 import { useEffect, useState } from "react";
 import { cn } from "@/lib/utils";
+import { useSession } from "next-auth/react";
 
 export function HeroSection() {
   const [scrolled, setScrolled] = useState(false);
+  const { data: session } = useSession();
 
   // Handle scroll effect for navbar
   useEffect(() => {
@@ -41,7 +43,7 @@ export function HeroSection() {
         className="relative z-10 px-4 pt-20 md:pt-16"
       >
         {/* Hero content */}
-        <div className="container relative z-20 mx-auto">
+        <div className="container relative z-20 mx-auto min-h-screen flex flex-col justify-center align-middle items-center">
           <div
             className={cn(
               "fixed top-0 left-0 right-0 z-50 transition-all duration-300",
@@ -63,49 +65,39 @@ export function HeroSection() {
             >
               <div className="mb-2 inline-flex w-fit items-center gap-2 rounded-full bg-indigo-50 px-3 py-1 text-xs font-medium text-indigo-700 dark:bg-indigo-950/60 dark:text-indigo-300">
                 <Sparkles className="size-3" />
-                <span>AI-powered event platform</span>
+                <span>The future of seamless event planning</span>
               </div>
 
               <h1 className="mb-4 text-4xl font-bold tracking-tight text-slate-900 dark:text-white md:text-5xl lg:text-6xl">
-                Create smarter
+                Plan smarter,
                 <br />
                 <span className="bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent dark:from-indigo-400 dark:to-purple-400">
-                  events with AI
+                  host better
                 </span>
               </h1>
 
               <p className="mb-6 max-w-md text-lg leading-relaxed text-slate-600 dark:text-slate-300">
-                Transform how you plan and manage events with AI-powered
-                chatbots, intelligent scheduling, and real-time analytics for
-                exceptional attendee experiences.
+                Effortlessly organize, schedule, and manage events with
+                intuitive tools, streamlined workflows, and real-time
+                insights—making every experience unforgettable.
               </p>
 
               <div className="flex flex-col gap-4 sm:flex-row">
-                <Link href="/account">
-                  <Button className="h-12 rounded-lg bg-indigo-600 px-8 text-sm font-medium text-white shadow-md shadow-indigo-200 transition-all hover:bg-indigo-700 hover:shadow-lg dark:bg-indigo-600 dark:shadow-indigo-900/20 dark:hover:bg-indigo-500">
-                    Create your first event
-                  </Button>
-                </Link>
-                <Link href="/demo">
-                  <Button
-                    variant="outline"
-                    className="h-12 rounded-lg border-slate-200 bg-white/50 px-6 text-sm font-medium text-slate-800 backdrop-blur-sm transition-all hover:bg-white hover:text-indigo-600 dark:border-slate-800 dark:bg-slate-900/50 dark:text-slate-200 dark:hover:border-indigo-500 dark:hover:bg-slate-900 dark:hover:text-indigo-400"
-                  >
-                    See how it works
-                  </Button>
-                </Link>
-              </div>
-
-              <div className="mt-6 flex items-center gap-2">
-                <div className="flex -space-x-2">
-                  <div className="size-8 rounded-full bg-slate-200 dark:bg-slate-700"></div>
-                  <div className="size-8 rounded-full bg-slate-300 dark:bg-slate-600"></div>
-                  <div className="size-8 rounded-full bg-slate-400 dark:bg-slate-500"></div>
+                <div className="flex flex-col gap-4 sm:flex-row">
+                  {session?.user.id ? (
+                    <Link href="/dashboard">
+                      <Button className="h-12 rounded-lg bg-indigo-600 px-8 text-sm font-medium text-white shadow-md shadow-indigo-200 transition-all hover:bg-indigo-700 hover:shadow-lg dark:bg-indigo-600 dark:shadow-indigo-900/20 dark:hover:bg-indigo-500">
+                        Go to Dashboard
+                      </Button>
+                    </Link>
+                  ) : (
+                    <Link href="/account">
+                      <Button className="h-12 rounded-lg text-white bg-indigo-600 px-8 text-sm font-medium shadow-md shadow-indigo-200 transition-all hover:bg-indigo-700 hover:text-white hover:shadow-lg dark:bg-indigo-600 dark:shadow-indigo-900/20 dark:hover:bg-indigo-500">
+                        Get Started
+                      </Button>
+                    </Link>
+                  )}
                 </div>
-                <p className="text-sm text-slate-600 dark:text-slate-400">
-                  <span className="font-medium">500+</span> event organizers
-                  trust us
-                </p>
               </div>
             </motion.div>
 

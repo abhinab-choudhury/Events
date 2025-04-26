@@ -39,6 +39,7 @@ import {
 import Link from "next/link";
 import { ChartConfig, ChartContainer } from "@/components/ui/chart";
 import { ALLOWED_TYPES } from "@/lib/utils";
+import { ScrollArea } from "@radix-ui/react-scroll-area";
 
 // Define event type
 export type Event = {
@@ -66,6 +67,22 @@ const chartConfig = {
 } satisfies ChartConfig;
 
 const events: Event[] = [
+  {
+    name: "Tech Conference 2025",
+    eventType: "Conference",
+    startDate: "2025-03-15",
+    endDate: "2025-03-17",
+    participants: 450,
+    views: 1240,
+  },
+  {
+    name: "AI Hackathon",
+    eventType: "Hackathon",
+    startDate: "2025-04-01",
+    endDate: "2025-04-03",
+    participants: 200,
+    views: 890,
+  },
   {
     name: "Tech Conference 2025",
     eventType: "Conference",
@@ -171,7 +188,7 @@ const SearchActions = () => (
         <Input
           type="text"
           placeholder="Search events..."
-          className="pl-10 bg-background/50 backdrop-blur-sm"
+          className="pl-10 dark:bg-neutral-900 dark:text-neutral-500 dark:border-neutral-700 bg-background/50 backdrop-blur-sm"
         />
       </div>
     </div>
@@ -307,7 +324,7 @@ const EventTableRow = ({ event }: { event: Event }) => {
         : "Active";
 
   return (
-    <tr className="border-b border-border/50 hover:bg-muted/50 transition-colors">
+    <tr className="border-b border-border/50 dark:bg-slate-850/50 dark:hover:bg-slate-800/50 dark:border-neutral-800 hover:bg-muted/50 transition-colors">
       <td className="px-4 py-3">{name}</td>
       <td className="px-4 py-3">
         <Badge variant="outline" className={typeVariants[eventType]}>
@@ -351,7 +368,7 @@ const EventTableRow = ({ event }: { event: Event }) => {
 const EventsTable = ({ events }: { events: Event[] }) => (
   <div className="relative rounded-lg backdrop-blur-sm bg-background/10 border-muted">
     <div className="overflow-auto scrollbar-thin">
-      <table className="w-full text-sm">
+      <table className="w-[100%] text-sm border-2 dark:bg-gray-950">
         <thead>
           <tr className="border-b border-border/50 bg-muted/50">
             <th className="px-4 py-3 text-left font-medium">Event Name</th>
@@ -398,18 +415,12 @@ export default function EventsDashboard() {
   }
 
   return (
-    <div className="container w-full mx-auto space-y-6">
-      <DashboardHeader />
-
-      <div className="grid lg:grid-cols-3 gap-6 max-h-[80vh]">
-        <div className="lg:col-span-2 space-y-6">
-          <SearchActions />
-          <div className="h-[70vh] overflow-auto rounded-lg">
-            <EventsTable events={events} />
-          </div>
-        </div>
-        <AnalyticsCard />
+    <ScrollArea className="h-screen w-full">
+      <div className="space-y-4 p-4">
+        <DashboardHeader />
+        <SearchActions />
+        <EventsTable events={events} />
       </div>
-    </div>
+    </ScrollArea>
   );
 }

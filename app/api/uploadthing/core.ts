@@ -1,5 +1,4 @@
 import { getToken } from "next-auth/jwt";
-import { getSession } from "next-auth/react";
 import { NextRequest } from "next/server";
 import { createUploadthing, type FileRouter } from "uploadthing/next";
 import { UploadThingError } from "uploadthing/server";
@@ -30,7 +29,7 @@ export const ourFileRouter = {
     .onUploadComplete(async ({ metadata, file }) => {
       console.log("Upload complete for userId:", metadata.userId);
       console.log("File URL:", file.ufsUrl);
-
+       
       return { uploadedBy: metadata.userId };
     }),
 } satisfies FileRouter;

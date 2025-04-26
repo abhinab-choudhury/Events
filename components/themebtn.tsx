@@ -13,12 +13,13 @@ export default function ThemeModeToggle() {
   React.useEffect(() => {
     setMounded(true);
   }, []);
+
   if (!mounted) return null;
 
   return (
     <Button
       variant={"ghost"}
-      onClick={() => setTheme((prev) => (prev === "dark" ? "light" : "dark"))}
+      onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
       size="icon"
     >
       {theme === "dark" ? (

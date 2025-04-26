@@ -7,7 +7,6 @@ import {
   IconHome,
   IconDashboard,
   IconChartBar,
-  IconFileText,
   IconSettings,
   IconAdjustments,
   IconLogout,
@@ -15,74 +14,70 @@ import {
 import Link from "next/link";
 import { motion } from "framer-motion";
 import { cn } from "@/lib/utils";
-// import ThemeModeToggle from "@/components/themebtn";
 import { GalleryVerticalEnd } from "lucide-react";
 import { signOut, useSession } from "next-auth/react";
-import { useRouter } from "next/router";
+import { usePathname, useRouter } from "next/navigation";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+
+const links = [
+  {
+    label: "Home",
+    href: "/",
+    icon: (
+      <IconHome className="text-neutral-700 dark:text-neutral-200 h-5 w-5 flex-shrink-0" />
+    ),
+  },
+  {
+    label: "Dashboard",
+    href: "/dashboard",
+    icon: <IconDashboard className="text-inherit h-5 w-5 flex-shrink-0" />,
+  },
+  {
+    label: "Analytics",
+    href: "/analytics",
+    icon: (
+      <IconChartBar className="text-neutral-700 dark:text-neutral-200 h-5 w-5 flex-shrink-0" />
+    ),
+  },
+  {
+    label: "Project Settings",
+    href: "/project-settings",
+    icon: (
+      <IconSettings className="text-neutral-700 dark:text-neutral-200 h-5 w-5 flex-shrink-0" />
+    ),
+  },
+  {
+    label: "Global Settings",
+    href: "/global-settings",
+    icon: (
+      <IconAdjustments className="text-neutral-700 dark:text-neutral-200 h-5 w-5 flex-shrink-0" />
+    ),
+  },
+];
 
 export default function Layout({ children }: { children: React.ReactNode }) {
   const { data: session } = useSession();
+  const pathname = usePathname();
+  const [open, setOpen] = useState(false);
   const router = useRouter();
 
-  const links = [
-    {
-      label: "Home",
-      href: "/",
-      icon: (
-        <IconHome className="text-neutral-700 dark:text-neutral-200 h-5 w-5 flex-shrink-0" />
-      ),
-    },
-    {
-      label: "Dashboard",
-      href: "/dashboard",
-      icon: (
-        <IconDashboard className="text-neutral-700 dark:text-neutral-200 h-5 w-5 flex-shrink-0" />
-      ),
-    },
-    {
-      label: "Analytics",
-      href: "/analytics",
-      icon: (
-        <IconChartBar className="text-neutral-700 dark:text-neutral-200 h-5 w-5 flex-shrink-0" />
-      ),
-    },
-    {
-      label: "Pages",
-      href: "/pages",
-      icon: (
-        <IconFileText className="text-neutral-700 dark:text-neutral-200 h-5 w-5 flex-shrink-0" />
-      ),
-    },
-    {
-      label: "Project Settings",
-      href: "/project-settings",
-      icon: (
-        <IconSettings className="text-neutral-700 dark:text-neutral-200 h-5 w-5 flex-shrink-0" />
-      ),
-    },
-    {
-      label: "Global Settings",
-      href: "/global-settings",
-      icon: (
-        <IconAdjustments className="text-neutral-700 dark:text-neutral-200 h-5 w-5 flex-shrink-0" />
-      ),
-    },
-  ];
-  const [open, setOpen] = useState(false);
   return (
     <div
       className={cn(
         "rounded-md flex flex-col md:flex-row bg-transparent w-full flex-1 max-w-full min-h-screen mx-auto border border-neutral-200 dark:border-neutral-700 overflow-auto",
-        "h-[60vh]", // for your use case, use `h-screen` instead of `h-[60vh]`
+        "h-[60vh]" // for your use case, use `h-screen` instead of `h-[60vh]`
       )}
     >
       <Sidebar open={open} setOpen={setOpen}>
-        <SidebarBody className="justify-between gap-10 bg-gray-50 dark:bg-gray-950">
+        <SidebarBody className="justify-between gap-10 bg-gray-50 dark:bg-slate-950">
           <div className="flex flex-col flex-1 overflow-y-auto overflow-x-hidden">
             {open ? <Logo /> : <LogoIcon />}
             <div className="mt-8 flex flex-col gap-2">
               {links.map((link, idx) => (
-                <SidebarLink key={idx} link={link} />
+                <SidebarLink
+                  key={idx}
+                  link={link}
+                />
               ))}
               <SidebarLink
                 fn={async () => {
@@ -94,7 +89,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
                     }
                   } catch (error) {
                     toast(
-                      "Unable to log out. Please check your connection and try again. ❌",
+                      "Unable to log out. Please check your connection and try again. ❌"
                     );
                     console.error("Logout error:", error);
                   }
@@ -115,20 +110,25 @@ export default function Layout({ children }: { children: React.ReactNode }) {
                 label: session?.user.name || "User",
                 href: "/profile",
                 icon: (
-                  <img
-                    src={session?.user.image || ""}
-                    className="h-7 w-7 flex-shrink-0 rounded-full"
-                    width={50}
-                    height={50}
-                    alt="Avatar"
-                  />
+                  <Avatar className="-ml-3">
+                    <AvatarImage src={session?.user?.image || ""} alt="user" />
+                    <AvatarFallback>
+                      {session?.user?.name
+                        ?.split(" ")
+                        .map((n) => n[0])
+                        .join("")
+                        .toUpperCase()}
+                    </AvatarFallback>
+                  </Avatar>
                 ),
               }}
             />
           </div>
         </SidebarBody>
       </Sidebar>
-      <div className="flex flex-1 dark:bg-gray-950 p-6">{children}</div>
+      <div className="flex flex-1 p-6 overflow-auto dark:bg-gray-900">
+        {children}
+      </div>
     </div>
   );
 }
@@ -148,7 +148,6 @@ export const Logo = () => {
           Events AI
         </motion.span>
       </div>
-      {/* <ThemeModeToggle /> */}
     </Link>
   );
 };

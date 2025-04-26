@@ -1,11 +1,11 @@
 generator client {
-  provider        = "prisma-client-js"
-  previewFeatures = ["driverAdapters"]
+  provider = "prisma-client-js"
 }
 
 datasource db {
-  provider = "postgresql"
-  url      = env("DATABASE_URL")
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_DATABASE_URL")
 }
 
 model User {
@@ -23,34 +23,93 @@ model User {
 }
 
 model Event {
-  id           String        @id @default(cuid())
-  organizer    User          @relation(fields: [organizerId], references: [id], onDelete: Cascade)
-  organizerId  String
-  title        String
-  poster       String
-  description  String
-  isActive     Boolean
-  reviews      EventReview[]
-  chatMessages ChatMessage[]
+  id                  String         @id @default(cuid())
+  organizer           User           @relation(fields: [organizerId], references: [id], onDelete: Cascade)
+  type                EventType
+  organizerId         String
+  title               String
+  banner              String
+  description         String
+  mode                EventMode
+  location            String?
+  onlineLink          String?
+  acceptReviews       Boolean
+  agendas             String[]
+  approxAudienceCount Int
+  requireApproval     Boolean
+  isActive            Boolean
+  socialLinks         SocialLink[]
+  externalLinks       ExternalLink[]
+  reviews             EventReview[]
+
+  @@index([organizerId])
 }
 
-model EventReview {
-  id      String  @id @default(cuid())
-  event   Event?  @relation(fields: [eventId], references: [id], onDelete: Cascade)
-  eventId String?
-  review  String
-}
-
-model ChatMessage {
+model ExternalLink {
   id      String @id @default(cuid())
   event   Event  @relation(fields: [eventId], references: [id], onDelete: Cascade)
   eventId String
-  sender  Sender
-  message String
+  title   String
+  url     String
+
+  @@index([eventId])
+}
+
+model SocialLink {
+  id      String          @id @default(cuid())
+  event   Event           @relation(fields: [eventId], references: [id], onDelete: Cascade)
+  eventId String
+  type    SocialMediaType
+  url     String
+
+  @@index([eventId])
+}
+
+model EventReview {
+  id      String @id @default(cuid())
+  eventId String
+  event   Event  @relation(fields: [eventId], references: [id], onDelete: Cascade)
+  review  String
+
+  @@index([eventId])
+}
+
+enum EventMode {
+  ONLINE
+  OFFLINE
+  HYBRID
+}
+
+enum EventType {
+  CONFERENCE
+  HACKATHON
+  MEETUP
+  WORKSHOP
 }
 
 enum Sender {
   USER
   BOT
   MANAGER
+}
+
+enum SocialMediaType {
+  TWITTER
+  LINKEDIN
+  WEBSITE
+  YOUTUBE
+  INSTAGRAM
+  FACEBOOK
+  TIKTOK
+  EVENTBRITE
+  MEETUP
+  DISCORD
+  SLACK
+  TELEGRAM
+  REDDIT
+  YOUTUBE_SHORTS
+  VIMEO
+  SPOTIFY
+  TUMBLR
+  FLICKR
 }

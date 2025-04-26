@@ -4,7 +4,7 @@ import { useState, useEffect, use } from "react";
 import { motion } from "framer-motion";
 import { GalleryVerticalEnd, LogOut, Settings, User } from "lucide-react";
 import { Button } from "./ui/button";
-// import ThemeModeToggle from "./themebtn";
+import ThemeModeToggle from "./themebtn";
 import Link from "next/link";
 import {
   DropdownMenu,
@@ -51,7 +51,7 @@ export default function Navbar() {
         <Link href="/" className="flex items-center gap-2">
           <GalleryVerticalEnd className="size-6 text-indigo-600 dark:text-indigo-400" />
           <span className="text-lg font-semibold text-slate-900 dark:text-white">
-            Events AI
+            Events
           </span>
         </Link>
         <div className="hidden items-center gap-6 md:flex">
@@ -75,7 +75,7 @@ export default function Navbar() {
           </Link>
         </div>
         <div className="flex items-center gap-3">
-          {/* <ThemeModeToggle /> */}
+          <ThemeModeToggle />
           {status !== "authenticated" ? (
             <Link href="/account">
               <Button

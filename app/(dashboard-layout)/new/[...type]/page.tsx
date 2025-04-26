@@ -14,13 +14,15 @@ import { Button } from "@/components/ui/button";
 import { addDays } from "date-fns";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { useForm, FormProvider } from "react-hook-form";
-import { createEventFormSchema, FormValues } from "@/lib/zod";
+import { useForm, FormProvider, SubmitHandler } from "react-hook-form";
+import { createEventFormSchema, FormSchema } from "@/lib/zod";
 import BasicDetails from "@/components/form/basic-fileds";
 import EventDateTime from "@/components/form/datetime-fields";
 import EventAgenda from "@/components/form/audience-agenda-fields";
 import EventLinks from "@/components/form/links-fields";
 import { ALLOWED_TYPES, EVENT_TYPE_DESCRIPTIONS } from "@/lib/utils";
+import AxiosInstance from "@/lib/axiosInstance";
+import { useSession } from "next-auth/react";
 
 function PageHeader({
   heading,
@@ -32,7 +34,9 @@ function PageHeader({
   return (
     <div className="space-y-4 mb-12 w-full text-center">
       <h1 className="text-4xl font-extrabold tracking-tight lg:text-6xl bg-gradient-to-r from-gray-950 to-blue-950 bg-clip-text text-transparent">
-        Create a {heading?.charAt(0).toUpperCase() + heading?.slice(1)}
+        Create a{" "}
+        {heading?.charAt(0).toUpperCase() +
+          heading?.slice(1).toLocaleLowerCase()}
       </h1>
       <p className="text-lg text-muted-foreground max-w-2xl mx-auto leading-relaxed">
         {description}
@@ -44,33 +48,38 @@ function PageHeader({
 export default function EventForm() {
   const pathname = usePathname();
   const router = useRouter();
+  const { status } = useSession();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const segments = pathname.split("/").filter(Boolean);
 
   if (
     segments.length !== 2 ||
     segments[0] !== "new" ||
-    !ALLOWED_TYPES.includes(segments[1])
+    !ALLOWED_TYPES.includes(
+      segments[1].toUpperCase() as (typeof ALLOWED_TYPES)[number]
+    )
   ) {
     notFound();
   }
 
-  const form = useForm<FormValues>({
+  const form = useForm<FormSchema>({
     resolver: zodResolver(createEventFormSchema),
     defaultValues: {
+      type: segments[1].toUpperCase(),
       title: "",
       description: "",
       date_range: {
         from: new Date(),
-        to: addDays(new Date(), 5),
+        to: addDays(new Date(), 3),
       },
-      time: "",
+      start_time: "",
+      end_time: "",
       approx_audience_count: 0,
-      location: "",
       mode: "hybrid",
-      external_links: [],
-      agenda: [""],
+      location: "",
       online_join_link: "",
+      has_agenda: false,
+      has_external_links: false,
       social_links: {
         twitter: "",
         linkedin: "",
@@ -82,14 +91,22 @@ export default function EventForm() {
     },
   });
 
-  const onSubmit = form.handleSubmit((data) => {
+  const onSubmit: SubmitHandler<FormSchema> = async (data) => {
     setIsSubmitting(true);
-    // Replace with actual submit logic
-    setTimeout(() => {
-      alert("Form submitted successfully!");
+
+    try {
+      if (status === "authenticated") {
+        alert(JSON.stringify(data, null, 2));
+
+        const response = await AxiosInstance.post("/event", data);
+        console.log(JSON.stringify(response.data, null, 2));
+      }
+    } catch (error) {
+      console.error("Submission error:", error);
+    } finally {
       setIsSubmitting(false);
-    }, 1000);
-  });
+    }
+  };
 
   return (
     <ScrollArea className="container max-w-4xl mx-auto">
@@ -114,23 +131,12 @@ export default function EventForm() {
 
         <CardContent className="pt-8 pb-4 px-8 bg-white">
           <FormProvider {...form}>
-            <form onSubmit={onSubmit} className="space-y-8">
+            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
               <div className="space-y-8 divide-y divide-slate-100">
-                <div className="pb-6">
-                  <BasicDetails />
-                </div>
-
-                <div className="py-6">
-                  <EventDateTime />
-                </div>
-
-                <div className="py-6">
-                  <EventAgenda />
-                </div>
-
-                <div className="py-6">
-                  <EventLinks />
-                </div>
+                <BasicDetails />
+                <EventDateTime />
+                <EventAgenda />
+                <EventLinks />
               </div>
 
               <CardFooter className="px-0 pt-6 pb-2 flex justify-end border-t border-slate-100 mt-8">

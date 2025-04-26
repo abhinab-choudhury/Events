@@ -34,7 +34,7 @@ export default function EventLinks() {
             type="button"
             variant="outline"
             size="sm"
-            onClick={() => append({ title: "", link: "" })}
+            onClick={() => append({ title: "", url: "" })}
             className="flex items-center hover:bg-primary/10 transition-colors"
           >
             <Plus className="w-4 h-4 mr-1.5" /> Add Link
@@ -63,8 +63,8 @@ export default function EventLinks() {
                         <FormControl>
                           <Input
                             placeholder="Link Title"
-                            {...field}
                             className="focus:ring-2 focus:ring-primary/20"
+                            {...field}
                           />
                         </FormControl>
                         <FormMessage />
@@ -74,14 +74,14 @@ export default function EventLinks() {
                   <div className="flex items-center gap-2">
                     <FormField
                       control={control}
-                      name={`external_links.${index}.link`}
+                      name={`external_links.${index}.url`}
                       render={({ field }) => (
                         <FormItem className="flex-1">
                           <FormControl>
                             <Input
                               placeholder="https://..."
-                              {...field}
                               className="focus:ring-2 focus:ring-primary/20"
+                              {...field}
                             />
                           </FormControl>
                           <FormMessage />
